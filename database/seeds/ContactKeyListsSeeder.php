@@ -39,6 +39,16 @@ class ContactKeyListsSeeder extends Seeder
         ]);
         Keyvalue::create([
             'keytype_id'    => $keytype->id,
+            'keyvalue'      => 'office',
+            'keyname'       => 'Office Address',
+        ]);
+        Keyvalue::create([
+            'keytype_id'    => $keytype->id,
+            'keyvalue'      => 'home',
+            'keyname'       => 'Home Address',
+        ]);
+        Keyvalue::create([
+            'keytype_id'    => $keytype->id,
             'keyvalue'      => 'head-office',
             'keyname'       => 'Head Office Address',
         ]);

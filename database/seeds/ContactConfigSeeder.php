@@ -14,6 +14,7 @@ class ContactConfigSeeder extends Seeder
     {
         // Base configuration data
         SiteConfigSaver::set('geocode.api_key', 'GET-YOUR-OWN-API-KEY');
+        SiteConfigSaver::set('geocode.use_api_key', false);
         SiteConfigSaver::set('geocode.url', 'https://maps.google.com/maps/api/geocode/json');
         SiteConfigSaver::set('geocode.method', 'GET');
     }
