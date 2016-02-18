@@ -64,27 +64,10 @@ php artisan vendor:publish --provider='Delatbabel\Contacts\ContactsServiceProvid
 php artisan migrate
 ```
 
-# Example
+# Usage Examples
 
-TODO
-
-# TODO
-
-## Zoho Integration
-
-Build integraton with Zoho.  This seems to have a simple to use API.
-
-example:
-
-* POST URL https://crm.zoho.com/crm/private/json/Leads/getRecords
-* POST DATA authtoken = (authtoken -- get one from Zoho), scope = crmapi
-* Responds with a JSON structure -- examine this using postman.
-
-Tasks:
-
-* Build a generic call interface.
-* Build a data mapper between the Zoho CRM API fields and our fields.
-* Build the service to upload and download each record type.
+General usage example: TODO, although see the ContactSampleSeeder for simple examples for
+creating addresses, companies and contacts.
 
 ## Geocoding
 
@@ -117,6 +100,24 @@ API Keys:
 
 Geocoding is free up to 2500 requests per day, if you need to go over that limit per server
 IP address then you need to obtain an API key.
+
+# TODO
+
+## Zoho Integration
+
+Build integraton with Zoho.  This seems to have a simple to use API.
+
+example:
+
+* POST URL https://crm.zoho.com/crm/private/json/Leads/getRecords
+* POST DATA authtoken = (authtoken -- get one from Zoho), scope = crmapi
+* Responds with a JSON structure -- examine this using postman.
+
+Tasks:
+
+* Build a generic call interface.
+* Build a data mapper between the Zoho CRM API fields and our fields.
+* Build the service to upload and download each record type.
 
 # Architecture
 
