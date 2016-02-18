@@ -83,10 +83,10 @@ https://maps.google.com/maps/api/geocode/json?address=10+Downing+Street,London,U
 The geocoder works within the Address model class to automatically use the Google API
 to get the components of the address from a partial address.
 
-You can disable the geocoder by setting the config variable geocode.enable to false.
+You can disable the geocoder by setting the config variable contacts.geocode.enable to false.
 
 You can set up the geocoder to use an API key (which means you can go over the limit of
-2500 requests per day) by setting geocode.use_api_key to true, and setting geocode.api_key
+2500 requests per day) by setting contacts.geocode.use_api_key to true, and setting contacts.geocode.api_key
 to the API key.  See the ContactConfigSeeder for a seeder that sets these config variables
 in the database (in the configs table).
 
