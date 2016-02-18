@@ -80,7 +80,8 @@ class Contact extends Model
      * @param       string  $str
      * @return      string
      */
-    public function capitaliseName($str) {
+    public function capitaliseName($str)
+    {
         // exceptions to standard case conversion
         $all_lowercase = 'De La|De Las|Der|Van|Von|Van De|Van Der|Vit De|Von|Ten|Or|And';
 

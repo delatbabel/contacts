@@ -89,7 +89,7 @@ class Address extends Model
         $query[] = $this->country_name ?: '';
 
         // Build query string from the array
-        $query = trim( implode(',', array_filter($query)) );
+        $query = trim(implode(',', array_filter($query)));
         $query = str_replace(' ', '+', $query);
 
         // Build url
@@ -101,51 +101,58 @@ class Address extends Model
 
         // Try to get geocoded address
         // FIXME -- replace this with a call to GuzzleHttp.
-        if ( $geocode = file_get_contents($url) ) {
-            $output = json_decode($geocode);
-            if ( count($output->results) && isset($output->results[0]) ) {
-                // Grab the first result from the google return result (which is an array).
-                $result = $output->results[0];
-                if ( $geo = $result->geometry ) {
-                    $this->lat = $geo->location->lat;
-                    $this->lng = $geo->location->lng;
-                }
+        $geocode = file_get_contents($url);
 
-                // Get the place ID if we have one
-                if (! empty($result->place_id)) {
-                    $this->place_id = $result->place_id;
-                }
-                if (! empty($result->formatted_address)) {
-                    $this->formatted_address = $result->formatted_address;
-                }
+        if (empty($geocode)) {
+            return $this;
+        }
 
-                // Read through the address_components to see what other columns we can fill
-                // This means ferreting through a types array within each address_components
-                // which is not highly efficient but it works.
-                $components = $result->address_components;
-                foreach ($components as $component) {
-                    $types = $component->types;
+        $output = json_decode($geocode);
+        if (count($output->results) == 0 || empty($output->results[0])) {
+            return $this;
+        }
 
-                    if (in_array('locality', $types)) {
-                        $this->suburb = $component->long_name;
-                    }
-                    if (in_array('country', $types)) {
-                        $this->country_name = $component->long_name;
-                        $this->country_code = $component->short_name;
-                    }
-                    if (in_array('postal_code', $types)) {
-                        $this->postal_code = $component->long_name;
-                    }
-                    if (in_array('administrative_area_level_1', $types)) {
-                        $this->state_name = $component->long_name;
-                        $this->state_code = $component->short_name;
-                    }
-                }
+        // Grab the first result from the google return result (which is an array).
+        $result = $output->results[0];
+        if ($geo = $result->geometry) {
+            $this->lat = $geo->location->lat;
+            $this->lng = $geo->location->lng;
+        }
+
+        // Get the place ID and formatted address if we have one
+        if (! empty($result->place_id)) {
+            $this->place_id = $result->place_id;
+        }
+        if (! empty($result->formatted_address)) {
+            $this->formatted_address = $result->formatted_address;
+        }
+
+        // Read through the address_components to see what other columns we can fill
+        // This means ferreting through a types array within each address_components
+        // which is not highly efficient but it works.
+        $components = $result->address_components;
+        foreach ($components as $component) {
+            $types = $component->types;
+
+            if (in_array('locality', $types)) {
+                $this->suburb = $component->long_name;
+            }
+            if (in_array('country', $types)) {
+                $this->country_name = $component->long_name;
+                $this->country_code = $component->short_name;
+            }
+            if (in_array('postal_code', $types)) {
+                $this->postal_code = $component->long_name;
+            }
+            if (in_array('administrative_area_level_1', $types)) {
+                $this->state_name = $component->long_name;
+                $this->state_code = $component->short_name;
             }
         }
 
         return $this;
     }
+
     /**
      * Get all of the address types (categories).
      *
