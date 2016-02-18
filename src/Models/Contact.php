@@ -89,35 +89,30 @@ class Contact extends Model
         $suffixes = "'S";
 
         // captialize all first letters
-        // $str = preg_replace('/\\b(\\w)/e', 'strtoupper("$1")', strtolower(trim($str)));
         $str = preg_replace_callback('/\\b(\\w)/',
             function ($matches) {return strtoupper($matches[1]); },
             strtolower(trim($str))
         );
 
         // capitalize acronymns and initialisms e.g. PO
-        // $str = preg_replace("/\\b($all_uppercase)\\b/e", 'strtoupper("$1")', $str);
         $str = preg_replace_callback("/\\b($all_uppercase)/",
             function ($matches) {return strtoupper($matches[1]); },
             $str
         );
 
         // decapitalize short words e.g. van der
-        // $str = preg_replace("/\\b($all_lowercase)\\b/e", 'strtolower("$1")', $str);
         $str = preg_replace_callback("/\\b($all_lowercase)/",
             function ($matches) {return strtolower($matches[1]); },
             $str
         );
 
         // capitalize letter after certain name prefixes e.g 'Mc'
-        // $str = preg_replace("/\\b($prefixes)(\\w)/e", '"$1".strtoupper("$2")', $str);
         $str = preg_replace_callback("/\\b($prefixes)(\\w)/",
             function ($matches) {return $matches[1] . strtoupper($matches[2]); },
             $str
         );
 
         // decapitalize certain word suffixes e.g. 's
-        // $str = preg_replace("/(\\w)($suffixes)\\b/e", '"$1".strtolower("$2")', $str);
         $str = preg_replace_callback("/(\\w)($suffixes)\\b/",
             function ($matches) {return $matches[1] . strtolower($matches[2]); },
             $str
