@@ -20,7 +20,7 @@ class ContactSampleSeeder extends Seeder
             'street'        => '10 Downing Street',
             'city'          => 'London',
             'postcode'      => 'SW1A 2AB',
-            'country'       => 'United Kingdom',
+            'country_name'  => 'United Kingdom',
         ]);
         $address_pm->geocode();
         $address_pm->save();
