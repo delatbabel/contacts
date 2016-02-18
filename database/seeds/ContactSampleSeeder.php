@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Delatbabel\Contacts\Models\Address;
 use Delatbabel\Contacts\Models\Company;
 use Delatbabel\Contacts\Models\Contact;
+use Delatbabel\NestedCategories\Models\Category;
 
 class ContactSampleSeeder extends Seeder
 {
@@ -42,16 +43,22 @@ class ContactSampleSeeder extends Seeder
             'email'         => 'pm@number10.gov.uk',
         ]);
 
+        // Find categories
+        $company_lead = Category::where('description', '=', 'Company Types > Lead')->first();
+        $contact_lead = Category::where('description', '=', 'Contact Types > Lead')->first();
+
         // Attachments
         $company->addresses()->attach($address_pm->id, [
             'address_type'  => 'head-office',
             'status'        => 'current',
         ]);
+        $company->categories()->attach($company_lead->id);
 
         $contact->addresses()->attach($address_pm->id, [
             'address_type'  => 'office',
             'status'        => 'current',
             'start_date'    => '2010-05-11',
         ]);
+        $contact->categories()->attach($contact_lead->id);
     }
 }
