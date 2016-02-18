@@ -15,6 +15,7 @@ class CreateContactsTables extends Migration {
         Schema::create('addresses', function(Blueprint $table)
         {
             $table->increments('id');
+            // Multi line street address if required.
             $table->text('street')->nullable();
             $table->string('suburb', 255)->nullable();
             $table->string('city', 255)->nullable();
@@ -57,6 +58,7 @@ class CreateContactsTables extends Migration {
             $table->string('full_name', 255)->nullable()->index();
             $table->string('company_name', 255)->nullable()->index();
             $table->string('position', 255)->nullable();
+            $table->string('email', 255)->nullable()->index();
             $table->string('password', 255)->nullable();
             $table->date('dob')->nullable();
             $table->string('gender', 255)->nullable();

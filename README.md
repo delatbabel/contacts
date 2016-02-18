@@ -1,4 +1,4 @@
-# contacts
+# Contacts
 
 A package to do simple contact management and storage for Laravel.
 
@@ -60,7 +60,7 @@ After composer update completes, add this line to your config/app.php file in th
 Finally, incorporate and run the migration scripts to create the database tables as follows:
 
 ```php
-php artisan vendor:publish --tag=migrations --force
+php artisan vendor:publish --provider='Delatbabel\Contacts\ContactsServiceProvider' --force
 php artisan migrate
 ```
 
@@ -72,3 +72,22 @@ TODO
 
 This has been ported across from an old Laravel 3 package that handled contact management
 inside an e-commerce system of sorts.
+
+## Data Structures
+
+Base Tables:
+
+* addresses
+* companies
+* contacts
+
+Relations:
+
+* companies many:many addresses
+* contacts many:many addresses
+* companies 1:many contacts
+* contacts many:many categories (from delatbabel/nestedcategories)
+* companies many:many categories
+
+The many:many pivot tables on addresses have start_date and end_date fields so that past and
+current addresses can be stored if required.

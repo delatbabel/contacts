@@ -26,6 +26,11 @@ class ContactCategoriesSeeder extends CategoriesTableBaseSeeder
                 'Head Office'       => [],
                 'Branch Office'     => [],
             ],
+            'Address Statuses' => [
+                'Current'           => [],
+                'Expired'           => [],
+                'Future'            => [],
+            ],
             'Contact Types' => [
                 'Lead'              => [],
                 'Potential'         => [],

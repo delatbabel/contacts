@@ -75,4 +75,30 @@ class Address extends Model
 
         return $result;
     }
+
+    /**
+     * Get all of the address statuses (categories).
+     *
+     * Returns a key => value array, e.g.
+     * current => Current
+     * Suitable for use in pull-down lists.
+     *
+     * @return array
+     */
+    public static function getStatuses()
+    {
+        $categories = Category::where('slug', '=', 'address-statuses')
+            ->first()
+            ->leaves();
+
+        /** @var array $result */
+        $result = [];
+
+        /** @var Category $category */
+        foreach ($categories as $category) {
+            $result[$category->slug] = $category->name;
+        }
+
+        return $result;
+    }
 }
