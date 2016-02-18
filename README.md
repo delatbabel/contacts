@@ -55,13 +55,14 @@ After composer update completes, add this line to your config/app.php file in th
     Delatbabel\Contacts\ContactsServiceProvider::class,
 ```
 
-## Incorporate and Run the Migrations
+## Incorporate and Run the Migrations and Seeders
 
-Finally, incorporate and run the migration scripts to create the database tables as follows:
+Finally, incorporate and run the migration scripts to create and seed the database tables as follows:
 
 ```php
 php artisan vendor:publish --provider='Delatbabel\Contacts\ContactsServiceProvider' --force
 php artisan migrate
+php artisan db:seed
 ```
 
 # Usage Examples
