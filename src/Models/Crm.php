@@ -1,6 +1,6 @@
 <?php
 /**
- * Crmapi Model
+ * Crm Model
  *
  * @author Del
  */
@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Crmapi Model
+ * Crm Model
  *
  * Contains data used by CRM synchronisation.
  */
-class Crmapi extends Model
+class Crm extends Model
 {
     use SoftDeletes, Fluents;
 

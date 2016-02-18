@@ -77,7 +77,7 @@ class CreateContactsTables extends Migration {
                 ->onUpdate('cascade');
         });
 
-        Schema::create('crmapis', function(Blueprint $table)
+        Schema::create('crms', function(Blueprint $table)
         {
             $table->increments('id');
             $table->string('crm_name', 255)->index();
