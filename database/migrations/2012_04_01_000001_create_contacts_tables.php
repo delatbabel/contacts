@@ -81,12 +81,12 @@ class CreateContactsTables extends Migration {
         {
             $table->increments('id');
             $table->string('crm_name', 255)->index();
-            $table->string('crm_description', 255)->index();
+            $table->string('crm_description', 255)->nullable();
             $table->string('url', 255);
             $table->string('request_type', 10)->default('POST');
             $table->longText('parameters')->nullable();
             $table->string('data_format', 255)->default('JSON');
-            $table->string('data_mapper', 255);
+            $table->string('data_mapper', 255)->nullable();
             $table->timestamp('last_upload')->default('0000-00-00 00:00:00');
             $table->timestamp('last_download')->default('0000-00-00 00:00:00');
             $table->longText('extended_data')->nullable();
