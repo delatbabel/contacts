@@ -38,7 +38,7 @@ class Contact extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            return $model->fillFullName();
+            return $model->fillFullName()->fillCompanyName();
         });
     }
 
@@ -138,6 +138,29 @@ class Contact extends Model
 
         $this->full_name = $this->capitaliseName($this->first_name) .
             ' ' . $this->capitaliseName($this->last_name);
+
+        return $this;
+    }
+
+    /**
+     * Fill the company_name attribute from the company_id.
+     *
+     * If this company name is already populated, then this does nothing.
+     *
+     * @return Contact provides a fluent interface.
+     */
+    public function fillCompanyName()
+    {
+        if (! empty($this->company_name)) {
+            return $this;
+        }
+        if (empty($this->company_id)) {
+            return $this;
+        }
+
+        $company = Company::find($this->company_id);
+
+        $this->company_name = $company->company_name;
 
         return $this;
     }
