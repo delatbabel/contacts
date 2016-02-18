@@ -86,6 +86,28 @@ Tasks:
 * Build a data mapper between the Zoho CRM API fields and our fields.
 * Build the service to upload and download each record type.
 
+## Geocoding
+
+https://developers.google.com/maps/documentation/geocoding/intro
+
+Example:
+
+$url = 'https://maps.google.com/maps/api/geocode/json?address='.$query.'&key='.$key;
+
+... where $query is the address, imploded using "," as the separator, and with spaces
+replaced by "+".
+
+Usage limits:
+
+* https://developers.google.com/maps/documentation/geocoding/usage-limits
+
+API Keys:
+
+* https://developers.google.com/maps/documentation/geocoding/get-api-key
+* https://support.google.com/cloud/answer/6310037
+
+Free up to 2500 requests per day.
+
 # Architecture
 
 This has been ported across from an old Laravel 3 package that handled contact management

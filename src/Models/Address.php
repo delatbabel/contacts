@@ -8,7 +8,7 @@
 namespace Delatbabel\Contacts\Models;
 
 use Delatbabel\Fluents\Fluents;
-use Delatbabel\NestedCategories\Models\Category;
+use Delatbabel\Keylists\Models\Keyvalue;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -59,21 +59,9 @@ class Address extends Model
      *
      * @return array
      */
-    public static function getCategories()
+    public static function getTypes()
     {
-        $categories = Category::where('slug', '=', 'address-types')
-            ->first()
-            ->leaves();
-
-        /** @var array $result */
-        $result = [];
-
-        /** @var Category $category */
-        foreach ($categories as $category) {
-            $result[$category->slug] = $category->name;
-        }
-
-        return $result;
+        return Keyvalue::getKeyValuesByType('address-types');
     }
 
     /**
@@ -87,18 +75,6 @@ class Address extends Model
      */
     public static function getStatuses()
     {
-        $categories = Category::where('slug', '=', 'address-statuses')
-            ->first()
-            ->leaves();
-
-        /** @var array $result */
-        $result = [];
-
-        /** @var Category $category */
-        foreach ($categories as $category) {
-            $result[$category->slug] = $category->name;
-        }
-
-        return $result;
+        return Keyvalue::getKeyValuesByType('address-statuses');
     }
 }

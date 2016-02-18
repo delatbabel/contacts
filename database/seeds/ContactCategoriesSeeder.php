@@ -19,18 +19,6 @@ class ContactCategoriesSeeder extends CategoriesTableBaseSeeder
          * must be an array.
          */
         return [
-            'Address Types' => [
-                'Billing'           => [],
-                'Shipping'          => [],
-                'Contact'           => [],
-                'Head Office'       => [],
-                'Branch Office'     => [],
-            ],
-            'Address Statuses' => [
-                'Current'           => [],
-                'Expired'           => [],
-                'Future'            => [],
-            ],
             'Contact Types' => [
                 'Lead'              => [],
                 'Potential'         => [],
