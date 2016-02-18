@@ -77,7 +77,7 @@ Build integraton with Zoho.  This seems to have a simple to use API.
 example:
 
 * POST URL https://crm.zoho.com/crm/private/json/Leads/getRecords
-* POST DATA authtoken = (authtoken -- private), scope = crmapi
+* POST DATA authtoken = (authtoken -- get one from Zoho), scope = crmapi
 * Responds with a JSON structure -- examine this using postman.
 
 Tasks:
