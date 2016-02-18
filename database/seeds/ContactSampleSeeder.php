@@ -17,14 +17,12 @@ class ContactSampleSeeder extends Seeder
     {
         // Example address
         /** @var Address $address_pm */
-        $address_pm = new Address([
+        $address_pm = Address::create([
             'street'        => '10 Downing Street',
             'city'          => 'London',
             'postcode'      => 'SW1A 2AB',
             'country_name'  => 'United Kingdom',
         ]);
-        $address_pm->geocode();
-        $address_pm->save();
 
         $company = Company::create([
             'company_name'  => "Prime Minister's Office",

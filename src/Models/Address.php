@@ -53,12 +53,32 @@ class Address extends Model
     }
 
     /**
+     * Model bootstrap
+     *
+     * Ensure that the full_name field is filled even if it isn't initially provided.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            return $model->geocode();
+        });
+    }
+
+    /**
      * Geocode the provided street address into a latitude and longitude.
      *
      * @return Address provides a fluent interface.
      */
     public function geocode()
     {
+        // Bail out if geocoding is disabled.
+        if (! Config::get('geocode.enable')) {
+            return $this;
+        }
+
         // Build query array
         $query = [];
         $query[] = $this->street       ?: '';

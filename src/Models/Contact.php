@@ -29,21 +29,6 @@ class Contact extends Model
     ];
 
     /**
-     * Model bootstrap
-     *
-     * Ensure that the full_name field is filled even if it isn't initially provided.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            return $model->fillFullName()->fillCompanyName();
-        });
-    }
-
-    /**
      * Many:Many relationship with Address
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -72,6 +57,21 @@ class Contact extends Model
     public function company()
     {
         return $this->belongsTo('Delatbabel\Contacts\Models\Company');
+    }
+
+    /**
+     * Model bootstrap
+     *
+     * Ensure that the full_name field is filled even if it isn't initially provided.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            return $model->fillFullName()->fillCompanyName();
+        });
     }
 
     /**
