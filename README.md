@@ -88,14 +88,23 @@ Tasks:
 
 ## Geocoding
 
-https://developers.google.com/maps/documentation/geocoding/intro
+See the
+[Geocoding Intro on Google](https://developers.google.com/maps/documentation/geocoding/intro)
+for more information.
 
-Example:
+Geocoding is mostly implemented.  Here is a sample URL for the geocoder:
 
-$url = 'https://maps.google.com/maps/api/geocode/json?address='.$query.'&key='.$key;
+https://maps.google.com/maps/api/geocode/json?address=10+Downing+Street,London,United+Kingdom
 
-... where $query is the address, imploded using "," as the separator, and with spaces
-replaced by "+".
+The geocoder works within the Address model class to automatically use the Google API
+to get the components of the address from a partial address.
+
+You can disable the geocoder by setting the config variable geocode.enable to false.
+
+You can set up the geocoder to use an API key (which means you can go over the limit of
+2500 requests per day) by setting geocode.use_api_key to true, and setting geocode.api_key
+to the API key.  See the ContactConfigSeeder for a seeder that sets these config variables
+in the database (in the configs table).
 
 Usage limits:
 
@@ -106,7 +115,8 @@ API Keys:
 * https://developers.google.com/maps/documentation/geocoding/get-api-key
 * https://support.google.com/cloud/answer/6310037
 
-Free up to 2500 requests per day.
+Geocoding is free up to 2500 requests per day, if you need to go over that limit per server
+IP address then you need to obtain an API key.
 
 # Architecture
 

@@ -20,7 +20,6 @@ class ContactSampleSeeder extends Seeder
         $address_pm = Address::create([
             'street'        => '10 Downing Street',
             'city'          => 'London',
-            'postcode'      => 'SW1A 2AB',
             'country_name'  => 'United Kingdom',
         ]);
 

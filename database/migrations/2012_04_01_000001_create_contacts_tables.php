@@ -19,12 +19,14 @@ class CreateContactsTables extends Migration {
             $table->text('street')->nullable();
             $table->string('suburb', 255)->nullable();
             $table->string('city', 255)->nullable();
-            $table->string('state', 255)->nullable();
-            $table->string('postcode', 50)->nullable();
+            $table->string('state_name', 255)->nullable();
+            $table->string('state_code', 255)->nullable();
+            $table->string('postal_code', 50)->nullable();
             $table->string('country_name', 255)->nullable();
             $table->string('country_code', 8)->nullable();
             $table->string('contact_name', 255)->nullable();
             $table->string('contact_phone', 255)->nullable();
+            $table->string('place_id', 255)->nullable()->index();
             $table->decimal('lat', 10, 6)->nullable();
             $table->decimal('lng', 10, 6)->nullable();
             $table->longText('notes')->nullable();
