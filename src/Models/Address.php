@@ -93,10 +93,10 @@ class Address extends Model
         $query = str_replace(' ', '+', $query);
 
         // Build url
-        $url = Config::get('geocode.url');
+        $url = Config::get('contacts.geocode.url');
         $url .= '?address=' . $query;
-        if (Config::get('geocode.use_api_key')) {
-            $url .= '&key=' . Config::get('geocode.api_key');
+        if (Config::get('contacts.geocode.use_api_key')) {
+            $url .= '&key=' . Config::get('contacts.geocode.api_key');
         }
 
         // Try to get geocoded address
