@@ -15,7 +15,7 @@ class ContactConfigSeeder extends Seeder
         // Base configuration data
         ConfigModel::create([
             'group'         => 'config',
-            'key'           => 'geocode_api_key',
+            'key'           => 'geocode.api_key',
             'value'         => 'GET-YOUR-OWN-API-KEY',
             'type'          => 'string',
         ]);
