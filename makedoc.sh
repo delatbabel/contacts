@@ -10,7 +10,7 @@ APPNAME='Contacts API Documentation'
 CMDFILE=apigen.cmd.$$
 DESTDIR=./documents
 SRCDIRS="src"
-VENDORDIRS="vendor/delatbabel vendor/illuminate vendor/baum vendor/cocur"
+VENDORDIRS="vendor/delatbabel vendor/illuminate vendor/baum vendor/cocur vendor/cviebrock"
 
 #
 # Ensure that dependencies are installed (including codeception and phpunit)

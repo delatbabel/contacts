@@ -8,6 +8,7 @@
 namespace Delatbabel\Contacts\Models;
 
 use Delatbabel\Fluents\Fluents;
+use Delatbabel\NestedCategories\Models\Category;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -47,5 +48,31 @@ class Address extends Model
     {
         return $this->belongsToMany('Delatbabel\Contacts\Models\Company')
             ->withPivot(['address_type', 'status', 'start_date', 'end_date']);
+    }
+
+    /**
+     * Get all of the address types (categories).
+     *
+     * Returns a key => value array, e.g.
+     * billing => Billing
+     * Suitable for use in pull-down lists.
+     *
+     * @return array
+     */
+    public static function getCategories()
+    {
+        $categories = Category::where('slug', '=', 'address-types')
+            ->first()
+            ->leaves();
+
+        /** @var array $result */
+        $result = [];
+
+        /** @var Category $category */
+        foreach ($categories as $category) {
+            $result[$category->slug] = $category->name;
+        }
+
+        return $result;
     }
 }

@@ -75,6 +75,11 @@ class CreateContactsTables extends Migration {
                 ->onUpdate('cascade');
         });
 
+        // Note that we store the slug of the address type (string)
+        // rather than the category_id of the address type, because
+        // Laravel doesn't handle > 2 foreign keys on a pivot table
+        // particularly well.  Also it reduces the number of cross
+        // table joins which makes queries a bit more efficient.
         Schema::create('address_contact', function(Blueprint $table)
         {
             $table->increments('id');
@@ -155,7 +160,13 @@ class CreateContactsTables extends Migration {
      */
     public function down()
     {
-        Schema::drop('addresses');
+        Schema::drop('category_contact');
+        Schema::drop('category_company');
+        Schema::drop('address_company');
+        Schema::drop('address_contact');
+
         Schema::drop('contacts');
+        Schema::drop('companies');
+        Schema::drop('addresses');
     }
 }

@@ -8,6 +8,7 @@
 namespace Delatbabel\Contacts\Models;
 
 use Delatbabel\Fluents\Fluents;
+use Delatbabel\NestedCategories\Models\Category;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,5 +57,32 @@ class Company extends Model
     public function contacts()
     {
         return $this->hasMany('Delatbabel\Contacts\Models\Contact');
+    }
+
+    /**
+     * Get all of the company types (categories).
+     *
+     * Returns a id => value array, e.g.
+     * 31 => Customer
+     * Suitable for use in pull-down lists, and for storage as category_id
+     * in the foreign key field in the pivot tables.
+     *
+     * @return array
+     */
+    public static function getCategories()
+    {
+        $categories = Category::where('slug', '=', 'company-types')
+            ->first()
+            ->leaves();
+
+        /** @var array $result */
+        $result = [];
+
+        /** @var Category $category */
+        foreach ($categories as $category) {
+            $result[$category->id] = $category->name;
+        }
+
+        return $result;
     }
 }
