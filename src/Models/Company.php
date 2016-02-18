@@ -7,6 +7,7 @@
 
 namespace Delatbabel\Contacts\Models;
 
+use Delatbabel\Fluents\Fluents;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Company extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Fluents;
 
     /** @var array */
     protected $guarded = ['id'];

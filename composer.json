@@ -13,9 +13,8 @@
         "php": ">=5.4.0",
         "delatbabel/fluents": "~1.0",
         "delatbabel/nestedcategories": "~1.0",
-        "guzzlehttp/guzzle": "5.*",
-        "illuminate/contracts": "^5.0",
-        "illuminate/database": "^5.0",
+        "illuminate/contracts": "~5.0",
+        "illuminate/database": "~5.0",
         "illuminate/support": "~5.0"
     },
     "autoload": {
