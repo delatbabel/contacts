@@ -9,6 +9,7 @@ class ContactSeeder extends \Illuminate\Database\Seeder
      */
     public function run()
     {
+        $this->call(ContactConfigSeeder::class);
         $this->call(ContactCategoriesSeeder::class);
         $this->call(ContactKeyListsSeeder::class);
     }

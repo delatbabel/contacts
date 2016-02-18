@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Delatbabel\SiteConfig\Models\Config as ConfigModel;
 use Delatbabel\Keylists\Models\Keytype;
 use Delatbabel\Keylists\Models\Keyvalue;
 
@@ -14,14 +13,6 @@ class ContactKeyListsSeeder extends Seeder
      */
     public function run()
     {
-        // Base configuration data
-        ConfigModel::create([
-            'group'         => 'config',
-            'key'           => 'geocode_api_key',
-            'value'         => 'GET-YOUR-OWN-API-KEY',
-            'type'          => 'string',
-        ]);
-
         //
         // Create all of the address types
         //
