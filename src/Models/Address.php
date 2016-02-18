@@ -115,6 +115,9 @@ class Address extends Model
                 if (! empty($result->place_id)) {
                     $this->place_id = $result->place_id;
                 }
+                if (! empty($result->formatted_address)) {
+                    $this->formatted_address = $result->formatted_address;
+                }
 
                 // Read through the address_components to see what other columns we can fill
                 // This means ferreting through a types array within each address_components
