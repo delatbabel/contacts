@@ -16,7 +16,7 @@ class ContactSampleSeeder extends Seeder
     {
         // Example address
         /** @var Address $address_pm */
-        $address_pm = Address::new([
+        $address_pm = new Address([
             'street'        => '10 Downing Street',
             'city'          => 'London',
             'postcode'      => 'SW1A 2AB',
