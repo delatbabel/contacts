@@ -28,6 +28,21 @@ class Contact extends Model
     ];
 
     /**
+     * Model bootstrap
+     *
+     * Ensure that the full_name field is filled even if it isn't initially provided.
+     * 
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            return $model->fillFullName();
+        });
+    }
+
+    /**
      * Many:Many relationship with Address
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -56,6 +71,61 @@ class Contact extends Model
     public function company()
     {
         return $this->belongsTo('Delatbabel\Contacts\Models\Company');
+    }
+
+    /**
+     * Attempt to capitalise a name.
+     *
+     * @param       string  $str
+     * @return      string
+     */
+    public function capitaliseName($str) {
+        // exceptions to standard case conversion
+        $all_lowercase = 'De La|De Las|Der|Van|Von|Van De|Van Der|Vit De|Von|Ten|Or|And';
+
+        // addresses, essay titles ... and anything else
+        $all_uppercase = 'Po|Rr|Se|Sw|Ne|Nw';
+        $prefixes = "Mc|Mac";
+        $suffixes = "'S";
+
+        // captialize all first letters
+        $str = preg_replace('/\\b(\\w)/e', 'strtoupper("$1")', strtolower(trim($str)));
+
+        // capitalize acronymns and initialisms e.g. PO
+        $str = preg_replace("/\\b($all_uppercase)\\b/e", 'strtoupper("$1")', $str);
+
+        // decapitalize short words e.g. van der
+        $str = preg_replace("/\\b($all_lowercase)\\b/e", 'strtolower("$1")', $str);
+
+        // capitalize letter after certain name prefixes e.g 'Mc'
+        $str = preg_replace("/\\b($prefixes)(\\w)/e", '"$1".strtoupper("$2")', $str);
+
+        // decapitalize certain word suffixes e.g. 's
+        $str = preg_replace("/(\\w)($suffixes)\\b/e", '"$1".strtolower("$2")', $str);
+
+        return $str;
+    }
+
+    /**
+     * Fill the full_name attribute from the first_name and last_name.
+     *
+     * Also attempt proper capitalisation.
+     *
+     * If this full name is already populated, then this does nothing.
+     *
+     * @return Contact provides a fluent interface.
+     */
+    public function fillFullName()
+    {
+        if (! empty($this->full_name)) {
+            return $this;
+        }
+
+        $this->full_name = $this->capitaliseName(
+            $this->first_name . ' ' . $this->last_name
+        );
+
+        return $this;
     }
 
     /**
