@@ -120,6 +120,7 @@ Base Tables:
 * addresses
 * companies
 * contacts
+* crms
 
 Relations:
 
