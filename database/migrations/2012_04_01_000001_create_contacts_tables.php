@@ -77,6 +77,24 @@ class CreateContactsTables extends Migration {
                 ->onUpdate('cascade');
         });
 
+        Schema::create('crmapis', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('crm_name', 255)->index();
+            $table->string('crm_description', 255)->index();
+            $table->string('url', 255);
+            $table->string('request_type', 10)->default('POST');
+            $table->longText('parameters')->nullable();
+            $table->string('data_format', 255)->default('JSON');
+            $table->string('data_mapper', 255);
+            $table->timestamp('last_upload')->default('0000-00-00 00:00:00');
+            $table->timestamp('last_download')->default('0000-00-00 00:00:00');
+            $table->longText('extended_data')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         // Note that we store the slug of the address type (string)
         // rather than the category_id of the address type, because
         // Laravel doesn't handle > 2 foreign keys on a pivot table

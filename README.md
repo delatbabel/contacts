@@ -68,6 +68,24 @@ php artisan migrate
 
 TODO
 
+# TODO
+
+## Zoho Integration
+
+Build integraton with Zoho.  This seems to have a simple to use API.
+
+example:
+
+* POST URL https://crm.zoho.com/crm/private/json/Leads/getRecords
+* POST DATA authtoken = (authtoken -- private), scope = crmapi
+* Responds with a JSON structure -- examine this using postman.
+
+Tasks:
+
+* Build a generic call interface.
+* Build a data mapper between the Zoho CRM API fields and our fields.
+* Build the service to upload and download each record type.
+
 # Architecture
 
 This has been ported across from an old Laravel 3 package that handled contact management
