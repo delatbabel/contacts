@@ -39,6 +39,7 @@ class ContactSampleSeeder extends Seeder
             'timezone'      => 'Europe/London',
             'dob'           => '1966-10-09',
             'gender'        => 'M',
+            'email'         => 'pm@number10.gov.uk',
         ]);
 
         // Attachments
