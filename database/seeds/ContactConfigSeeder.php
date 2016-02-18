@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Delatbabel\SiteConfig\Models\Config as ConfigModel;
+use Delatbabel\SiteConfig\Facades\SiteConfigSaver;
 
 class ContactConfigSeeder extends Seeder
 {
@@ -13,11 +13,6 @@ class ContactConfigSeeder extends Seeder
     public function run()
     {
         // Base configuration data
-        ConfigModel::create([
-            'group'         => 'config',
-            'key'           => 'geocode.api_key',
-            'value'         => 'GET-YOUR-OWN-API-KEY',
-            'type'          => 'string',
-        ]);
+        SiteConfigSaver::set('geocode.api_key', 'GET-YOUR-OWN-API-KEY');
     }
 }
