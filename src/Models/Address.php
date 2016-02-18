@@ -12,6 +12,7 @@ use Delatbabel\Keylists\Models\Keyvalue;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Config;
+use Delatbabel\Applog\Models\Auditable;
 
 /**
  * Address Model
@@ -20,7 +21,7 @@ use Config;
  */
 class Address extends Model
 {
-    use SoftDeletes, Fluents;
+    use SoftDeletes, Fluents, Auditable;
 
     /** @var array */
     protected $guarded = ['id'];

@@ -6,7 +6,9 @@
  */
 namespace Delatbabel\Contacts;
 
+use Delatbabel\Applog\DebugServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use App;
 
 /**
  * Class ContactsServiceProvider
@@ -34,6 +36,10 @@ class ContactsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../database/seeds' => $this->app->databasePath() . '/seeds'
         ], 'seeds');
+
+        // Register other providers required by this provider, which saves the caller
+        // from having to register them each individually.
+        App::register(DebugServiceProvider::class);
     }
 
     /**

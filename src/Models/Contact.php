@@ -10,6 +10,7 @@ namespace Delatbabel\Contacts\Models;
 use Delatbabel\Fluents\Fluents;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Delatbabel\Applog\Models\Auditable;
 
 /**
  * Contact Model
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Contact extends Model
 {
-    use SoftDeletes, Fluents;
+    use SoftDeletes, Fluents, Auditable;
 
     /** @var array */
     protected $guarded = ['id'];

@@ -11,6 +11,7 @@ use Delatbabel\Fluents\Fluents;
 use Delatbabel\NestedCategories\Models\Category;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Delatbabel\Applog\Models\Auditable;
 
 /**
  * Company Model
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Company extends Model
 {
-    use SoftDeletes, Fluents;
+    use SoftDeletes, Fluents, Auditable;
 
     /** @var array */
     protected $guarded = ['id'];
