@@ -139,6 +139,15 @@ These links are active when logged into Zoho CRM:
 * Much the same tasks as above.
 * [Force.com REST API](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/)
 
+## Others
+
+Other integrations will probably happen on demand but the top ones would probably be:
+
+* [SugarCRM](http://www.sugarcrm.com/)
+* [vTiger](https://www.vtiger.com/)
+* [CiviCRM](https://civicrm.org/)
+* [X2CRM](http://www.x2crm.com/) -- created by [John Roberts](https://en.wikipedia.org/wiki/John_Roberts_%28software_entrepreneur%29)
+  after he left SugarCRM.
 
 # Architecture
 
