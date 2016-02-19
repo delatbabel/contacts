@@ -26,6 +26,7 @@ class ContactSampleSeeder extends Seeder
         $company = Company::create([
             'company_name'  => "Prime Minister's Office",
             'contact_name'  => 'David Cameron',
+            'sort_order'    => 'en',
             'website'       => 'https://en.wikipedia.org/wiki/Prime_Minister_of_the_United_Kingdom',
         ]);
 

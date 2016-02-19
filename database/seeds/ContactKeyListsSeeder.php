@@ -82,5 +82,31 @@ class ContactKeyListsSeeder extends Seeder
             'keyvalue'      => 'future',
             'keyname'       => 'Future Address',
         ]);
+
+        //
+        // Name ordering rules
+        // See https://en.wikipedia.org/wiki/Alphabetical_order#Ordering_by_surname
+        //
+        /** @var Keytype $keytype */
+        $keytype = Keytype::create([
+            'name'          => 'name-order',
+            'description'   => 'Name Ordering Rules',
+        ]);
+
+        Keyvalue::create([
+            'keytype_id'    => $keytype->id,
+            'keyvalue'      => 'en',
+            'keyname'       => 'English Convention: Smith, John',
+        ]);
+        Keyvalue::create([
+            'keytype_id'    => $keytype->id,
+            'keyvalue'      => 'nl',
+            'keyname'       => 'Dutch/German/South African style: Merwe van der, Joost',
+        ]);
+        Keyvalue::create([
+            'keytype_id'    => $keytype->id,
+            'keyvalue'      => 'cn',
+            'keyname'       => 'China/Vietnam/Korea style: Park Geun-hye',
+        ]);
     }
 }

@@ -155,6 +155,7 @@ Without crossing the line into full CRM, this is what I think we should be imple
 
 * Contact, Company and Address deduplication.
 * i18n, including better name handling and name sort order generation ("Last, First" or "First Last" or "Last van der, First")
+  (in progress).
 
 # Architecture
 

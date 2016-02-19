@@ -59,6 +59,8 @@ class CreateContactsTables extends Migration {
             $table->string('first_name', 255)->nullable();
             $table->string('last_name', 255)->nullable()->index();
             $table->string('full_name', 255)->nullable()->index();
+            $table->string('sorted_name', 255)->nullable()->index();
+            $table->string('sort_order', 10)->default('en');
             $table->string('company_name', 255)->nullable()->index();
             $table->string('position', 255)->nullable();
             $table->string('email', 255)->nullable()->index();

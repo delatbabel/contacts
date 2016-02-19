@@ -138,8 +138,31 @@ class Contact extends Model
             return $this;
         }
 
-        $this->full_name = $this->capitaliseName($this->first_name) .
-            ' ' . $this->capitaliseName($this->last_name);
+        $cfn = $this->capitaliseName($this->first_name);
+        $cln = $this->capitaliseName($this->last_name);
+        $this->full_name = $cfn . ' ' . $cln;
+
+        switch ($this->sort_order) {
+            case 'nl':
+                $ln_split = explode(' ', $cln);
+                $end = array_pop($ln_split);
+                array_unshift($ln_split, $end);
+                $sort_ln = implode(' ', $ln_split);
+                $this->sorted_name = $sort_ln . ', ' . $cfn;
+                break;
+
+            case 'cn':
+                $this->sorted_name = $cfn . ' ' . $cln;
+                break;
+
+            case 'en':
+                $this->sorted_name = $cln . ', ' . $cfn;
+                break;
+
+            default:
+                $this->sorted_name = $cln . ', ' . $cfn;
+                break;
+        }
 
         return $this;
     }
