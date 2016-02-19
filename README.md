@@ -17,7 +17,7 @@ Storage of:
 
 Interface with external CRM systems. Target systems include anything that provides a reasonable
 API, starting with the open source systems. There is a list of
-[Top 10 Open Source CRM Systems](http://www.crmsearch.com/top-10-open-source-crm-systems.php])
+[Top 10 Open Source CRM Systems](http://www.crmsearch.com/top-10-open-source-crm-systems.php)
 that we plan to integrate to. 
 Other systems that have an API that we plan interfacing to include:
 
