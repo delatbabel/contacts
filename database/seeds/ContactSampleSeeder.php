@@ -26,13 +26,13 @@ class ContactSampleSeeder extends Seeder
         $company = Company::create([
             'company_name'  => "Prime Minister's Office",
             'contact_name'  => 'David Cameron',
-            'sort_order'    => 'en',
             'website'       => 'https://en.wikipedia.org/wiki/Prime_Minister_of_the_United_Kingdom',
         ]);
 
         $contact = Contact::create([
             'first_name'    => 'David',
             'last_name'     => 'Cameron',
+            'sort_order'    => 'en',
             'company_id'    => $company->id,
             'position'      => 'Prime Minister',
             'timezone'      => 'Europe/London',
