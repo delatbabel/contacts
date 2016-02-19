@@ -70,7 +70,7 @@ class Company extends Model
      *
      * @return array
      */
-    public static function getCategories()
+    public static function getCompanyTypes()
     {
         $categories = Category::where('slug', '=', 'company-types')
             ->first()

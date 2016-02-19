@@ -11,6 +11,8 @@ use Delatbabel\Fluents\Fluents;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Delatbabel\Applog\Models\Auditable;
+use Delatbabel\Keylists\Models\Keyvalue;
+use Delatbabel\NestedCategories\Models\Category;
 
 /**
  * Contact Model
@@ -200,7 +202,7 @@ class Contact extends Model
      *
      * @return array
      */
-    public static function getCategories()
+    public static function getContactTypes()
     {
         $categories = Category::where('slug', '=', 'contact-types')
             ->first()
@@ -215,5 +217,19 @@ class Contact extends Model
         }
 
         return $result;
+    }
+
+    /**
+     * Get the name ordering rules.
+     *
+     * Returns a key => value array, e.g.
+     * en => English Convention: Smith, John
+     * Suitable for use in pull-down lists.
+     *
+     * @return array
+     */
+    public static function getNameOrderRules()
+    {
+        return Keyvalue::getKeyValuesByType('name-order');
     }
 }
