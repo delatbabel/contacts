@@ -149,6 +149,13 @@ Other integrations will probably happen on demand but the top ones would probabl
 * [X2CRM](http://www.x2crm.com/) -- created by [John Roberts](https://en.wikipedia.org/wiki/John_Roberts_%28software_entrepreneur%29)
   after he left SugarCRM.
 
+## More Features
+
+Without crossing the line into full CRM, this is what I think we should be implementing:
+
+* Contact, Company and Address deduplication.
+* i18n, including better name handling and name sort order generation ("Last, First" or "First Last" or "Last van der, First")
+
 # Architecture
 
 This has been ported across from an old Laravel 3 package that handled contact management
