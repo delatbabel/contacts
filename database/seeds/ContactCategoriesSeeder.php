@@ -28,15 +28,6 @@ class ContactCategoriesSeeder extends CategoriesTableBaseSeeder
                 'Customer'          => [],
                 'Vendor'            => [],
             ],
-            'Company Types' => [
-                'Lead'              => [],
-                'Potential'         => [],
-                'Account'           => [],
-                'Contact'           => [],
-                'Member'            => [],
-                'Customer'          => [],
-                'Vendor'            => [],
-            ],
         ];
     }
 }

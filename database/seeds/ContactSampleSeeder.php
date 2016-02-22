@@ -42,20 +42,51 @@ class ContactSampleSeeder extends Seeder
         ]);
 
         // Find categories
-        $company_lead = Category::where('description', '=', 'Company Types > Lead')->first();
-        $contact_lead = Category::where('description', '=', 'Contact Types > Lead')->first();
+        $contact_lead = Category::where('slug', '=', 'lead')->first();
 
         // Attachments
         $company->addresses()->attach($address_pm->id, [
             'address_type'  => 'head-office',
             'status'        => 'current',
         ]);
-        $company->categories()->attach($company_lead->id);
+        $company->categories()->attach($contact_lead->id);
 
         $contact->addresses()->attach($address_pm->id, [
             'address_type'  => 'office',
             'status'        => 'current',
             'start_date'    => '2010-05-11',
+        ]);
+        $contact->categories()->attach($contact_lead->id);
+
+        // Something to demonstrate name sorting
+        $address_sa = Address::create([
+            'street'        => '163 Uys Krige Drive',
+            'suburb'        => 'Plattekloof',
+            'city'          => 'Cape Town',
+            'county_name'   => 'South Africa',
+        ]);
+
+        $company_sa = Company::create([
+            'company_name'  => 'South African Rugby Union',
+            'website'       => 'http://www.sarugby.net/'
+        ]);
+
+        $contact_sa = Contact::create([
+            'first_name'    => 'Joost',
+            'last_name'     => 'van der Westhuizen',
+            'sort_order'    => 'nl',
+            'company_id'    => $company_sa->id,
+            'position'      => 'Scrum Half',
+        ]);
+
+        $company_sa->addresses()->attach($address_sa->id);
+        $company_sa->categories()->attach($contact_lead->id);
+
+        $contact_sa->addresses()->attach($address_sa->id, [
+            'address_type'  => 'office',
+            'status'        => 'previous',
+            'start_date'    => '1993-02-11',
+            'end_date'      => '2003-09-09',
         ]);
         $contact->categories()->attach($contact_lead->id);
     }
