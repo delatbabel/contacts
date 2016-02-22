@@ -75,7 +75,7 @@ class Address extends Model
     public function geocode()
     {
         // Bail out if geocoding is disabled.
-        if (! Config::get('geocode.enable')) {
+        if (! Config::get('contacts.geocode.enable')) {
             return $this;
         }
 
