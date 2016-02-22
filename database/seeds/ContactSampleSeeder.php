@@ -63,7 +63,7 @@ class ContactSampleSeeder extends Seeder
             'street'        => '163 Uys Krige Drive',
             'suburb'        => 'Plattekloof',
             'city'          => 'Cape Town',
-            'county_name'   => 'South Africa',
+            'country_name'  => 'South Africa',
         ]);
 
         $company_sa = Company::create([
