@@ -137,6 +137,9 @@ class Address extends Model
             if (in_array('locality', $types)) {
                 $this->suburb = $component->long_name;
             }
+            if (in_array('sublocality', $types)) {
+                $this->suburb = $component->long_name;
+            }
             if (in_array('country', $types)) {
                 $this->country_name = $component->long_name;
                 $this->country_code = $component->short_name;
