@@ -1,6 +1,6 @@
 <?php
 
-class ContactCategoriesSeeder extends CategoriesTableBaseSeeder
+class ContactCategoriesSeeder extends CategoriesTableBaseArraySeeder
 {
     /**
      * Return an array of nodes.
