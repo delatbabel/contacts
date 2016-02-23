@@ -80,7 +80,7 @@ class ContactSampleSeeder extends Seeder
         ]);
 
         $company_sa->addresses()->attach($address_sa->id);
-        $contact_sa->categories()->attach($contact_lead->id);
+        $company_sa->categories()->attach($contact_lead->id);
 
         $contact_sa->addresses()->attach($address_sa->id, [
             'address_type'  => 'office',
@@ -88,6 +88,6 @@ class ContactSampleSeeder extends Seeder
             'start_date'    => '1993-02-11',
             'end_date'      => '2003-09-09',
         ]);
-        $contact->categories()->attach($contact_lead->id);
+        $contact_sa->categories()->attach($contact_lead->id);
     }
 }
