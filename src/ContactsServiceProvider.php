@@ -7,6 +7,9 @@
 namespace Delatbabel\Contacts;
 
 use Delatbabel\Applog\DebugServiceProvider;
+use Delatbabel\Keylists\KeylistsServiceProvider;
+use Delatbabel\NestedCategories\NestedCategoriesServiceProvider;
+use Delatbabel\SiteConfig\SiteConfigServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use App;
 
@@ -40,6 +43,9 @@ class ContactsServiceProvider extends ServiceProvider
         // Register other providers required by this provider, which saves the caller
         // from having to register them each individually.
         App::register(DebugServiceProvider::class);
+        App::register(NestedCategoriesServiceProvider::class);
+        App::register(KeylistsServiceProvider::class);
+        App::register(SiteConfigServiceProvider::class);
     }
 
     /**
