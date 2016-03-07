@@ -92,8 +92,8 @@ class CreateContactsTables extends Migration {
             $table->longText('parameters')->nullable();
             $table->string('data_format', 255)->default('JSON');
             $table->string('data_mapper', 255)->nullable();
-            $table->timestamp('last_upload')->default('0000-00-00 00:00:00');
-            $table->timestamp('last_download')->default('0000-00-00 00:00:00');
+            $table->timestamp('last_upload')->nullable();
+            $table->timestamp('last_download')->nullable();
             $table->longText('extended_data')->nullable();
 
             $table->timestamps();
