@@ -59,10 +59,19 @@ After composer update completes, add this line to your config/app.php file in th
 Finally, incorporate and run the migration scripts to create and seed the database tables as follows:
 
 ```php
-php artisan vendor:publish --provider='Delatbabel\Contacts\ContactsServiceProvider' --force
+php artisan vendor:publish --force
 php artisan migrate
 php artisan db:seed
 ```
+
+I have included a ContactSeeder which incorporates seeders for categories, config and keylists in the
+correct order.  You can use this or not at your leisure.  To use it, include ContactSeeder into your
+normal DatabaseSeeder class or whatever else you use to seed your database.
+
+I have also included a ContactSampleSeeder which will seed the contacts database with a few sample
+companies (organisations) and individuals.  You can take a look at this to create your own seeder, or
+maybe you want to seed by pulling data from a CSV file or importing from a CRM or something.  It's
+up to you.
 
 # Usage Examples
 
