@@ -11,7 +11,6 @@ use Delatbabel\Keylists\KeylistsServiceProvider;
 use Delatbabel\NestedCategories\NestedCategoriesServiceProvider;
 use Delatbabel\SiteConfig\SiteConfigServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use App;
 
 /**
  * Class ContactsServiceProvider
@@ -34,18 +33,21 @@ class ContactsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../database/migrations' => $this->app->databasePath() . '/migrations'
+            __DIR__ . '/../database/migrations' => database_path() . '/migrations'
         ], 'migrations');
         $this->publishes([
-            __DIR__ . '/../database/seeds' => $this->app->databasePath() . '/seeds'
+            __DIR__ . '/../database/seeds' => database_path() . '/seeds'
         ], 'seeds');
+        $this->publishes([
+            __DIR__ . '/../config' => config_path()
+        ], 'config');
 
         // Register other providers required by this provider, which saves the caller
         // from having to register them each individually.
-        App::register(DebugServiceProvider::class);
-        App::register(NestedCategoriesServiceProvider::class);
-        App::register(KeylistsServiceProvider::class);
-        App::register(SiteConfigServiceProvider::class);
+        $this->app->register(DebugServiceProvider::class);
+        $this->app->register(NestedCategoriesServiceProvider::class);
+        $this->app->register(KeylistsServiceProvider::class);
+        $this->app->register(SiteConfigServiceProvider::class);
     }
 
     /**
