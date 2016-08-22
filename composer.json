@@ -14,8 +14,8 @@
         "delatbabel/applog": "^1.5",
         "delatbabel/fluents": "~1.0",
         "delatbabel/nestedcategories": "~1.0",
-        "delatbabel/keylists": "~1.0",
-        "delatbabel/site-config": "~1.0",
+        "delatbabel/keylists": "dev-master",
+        "delatbabel/site-config": "dev-master",
         "illuminate/contracts": "~5.0",
         "illuminate/database": "~5.0",
         "illuminate/support": "~5.0"
