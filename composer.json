@@ -13,7 +13,7 @@
         "php": ">=5.4.0",
         "delatbabel/applog": "^1.5",
         "delatbabel/fluents": "~1.0",
-        "delatbabel/nestedcategories": "~1.0",
+        "delatbabel/nestedcategories": "dev-master",
         "delatbabel/keylists": "dev-master",
         "delatbabel/site-config": "dev-master",
         "illuminate/contracts": "~5.0",
