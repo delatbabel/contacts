@@ -56,7 +56,8 @@ return array(
         'company' => array(
             'title' => 'Company',
             'type' => 'relationship',
-            'name_field' => 'name',
+            'name_field' => 'company_name',
+            'options_sort_field' => 'company_name',
         ),
         'position' => array(
             'title' => 'Position',
