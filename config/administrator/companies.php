@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Companys model config
+ * Companies model config
  *
  * @link https://github.com/ddpro/admin/blob/master/docs/model-configuration.md
  */
@@ -68,6 +68,12 @@ return array(
             'title' => 'Company Website',
             'type' => 'text',
         ),
+        'categories' => array(
+            'title' => 'Categories',
+            'type' => 'relationship',
+            'name_field' => 'name',
+            'name_sort_order' => 'name',
+        ),
         'notes' => array(
             'title' => 'Notes',
             'type' => 'textarea',
@@ -78,5 +84,5 @@ return array(
         ),
     ),
 
-    'form_width' => 700,
+    'form_width' => 400,
 );
