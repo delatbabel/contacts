@@ -46,9 +46,9 @@ class Contact extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function categories()
+    public function category()
     {
-        return $this->belongsToMany('Delatbabel\NestedCategories\Models\Category');
+        return $this->belongsTo('Delatbabel\NestedCategories\Models\Category');
     }
 
     /**

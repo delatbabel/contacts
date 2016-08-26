@@ -14,7 +14,7 @@ class ContactSeeder extends \Illuminate\Database\Seeder
         $this->call(ContactKeyListsSeeder::class);
 
         // Test data only
-        if (App::environment('local', 'staging', 'testing')) {
+        if (App::environment('local', 'staging', 'testing', 'test')) {
             $this->call(ContactSampleSeeder::class);
         }
     }

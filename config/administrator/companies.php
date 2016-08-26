@@ -68,8 +68,8 @@ return array(
             'title' => 'Company Website',
             'type' => 'text',
         ),
-        'categories' => array(
-            'title' => 'Categories',
+        'category' => array(
+            'title' => 'Category',
             'type' => 'relationship',
             'name_field' => 'name',
             'name_sort_order' => 'name',

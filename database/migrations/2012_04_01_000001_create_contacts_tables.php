@@ -39,6 +39,7 @@ class CreateContactsTables extends Migration {
         Schema::create('companies', function(Blueprint $table)
         {
             $table->increments('id');
+            $table->integer('category_id')->unsigned()->nullable();
             $table->string('company_name', 255)->nullable()->index();
             $table->string('contact_name', 255)->nullable();
             $table->string('contact_phone', 255)->nullable();
@@ -50,12 +51,18 @@ class CreateContactsTables extends Migration {
             $table->longText('extended_data')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
         });
 
         Schema::create('contacts', function(Blueprint $table)
         {
             $table->increments('id');
             $table->integer('company_id')->unsigned()->nullable();
+            $table->integer('category_id')->unsigned()->nullable();
             $table->string('first_name', 255)->nullable();
             $table->string('last_name', 255)->nullable()->index();
             $table->string('full_name', 255)->nullable()->index();
@@ -78,6 +85,11 @@ class CreateContactsTables extends Migration {
 
             $table->foreign('company_id')
                 ->references('id')->on('companies')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
         });
@@ -144,38 +156,6 @@ class CreateContactsTables extends Migration {
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
-
-        Schema::create('category_company', function(Blueprint $table)
-        {
-            $table->increments('id');
-            $table->integer('category_id')->unsigned();
-            $table->integer('company_id')->unsigned();
-
-            $table->foreign('category_id')
-                ->references('id')->on('categories')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('company_id')
-                ->references('id')->on('companies')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
-
-        Schema::create('category_contact', function(Blueprint $table)
-        {
-            $table->increments('id');
-            $table->integer('category_id')->unsigned();
-            $table->integer('contact_id')->unsigned();
-
-            $table->foreign('category_id')
-                ->references('id')->on('categories')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('contact_id')
-                ->references('id')->on('companies')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
     }
 
     /**
@@ -185,13 +165,12 @@ class CreateContactsTables extends Migration {
      */
     public function down()
     {
-        Schema::drop('category_contact');
-        Schema::drop('category_company');
         Schema::drop('address_company');
         Schema::drop('address_contact');
 
         Schema::drop('contacts');
         Schema::drop('companies');
         Schema::drop('addresses');
+        Schema::drop('crms');
     }
 }

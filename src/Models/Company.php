@@ -43,11 +43,11 @@ class Company extends Model
     /**
      * Many:Many relationship with Category
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function categories()
+    public function category()
     {
-        return $this->belongsToMany('Delatbabel\NestedCategories\Models\Category');
+        return $this->belongsTo('Delatbabel\NestedCategories\Models\Category');
     }
 
     /**

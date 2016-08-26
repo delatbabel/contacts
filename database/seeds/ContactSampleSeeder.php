@@ -23,10 +23,14 @@ class ContactSampleSeeder extends Seeder
             'country_name'  => 'United Kingdom',
         ]);
 
+        // Find category
+        $contact_lead = Category::where('slug', '=', 'lead')->first();
+
         $company = Company::create([
             'company_name'  => "Prime Minister's Office",
             'contact_name'  => 'David Cameron',
             'website'       => 'https://en.wikipedia.org/wiki/Prime_Minister_of_the_United_Kingdom',
+            'category_id'   => $contact_lead->id,
         ]);
 
         $contact = Contact::create([
@@ -39,24 +43,20 @@ class ContactSampleSeeder extends Seeder
             'dob'           => '1966-10-09',
             'gender'        => 'M',
             'email'         => 'pm@number10.gov.uk',
+            'category_id'   => $contact_lead->id,
         ]);
-
-        // Find categories
-        $contact_lead = Category::where('slug', '=', 'lead')->first();
 
         // Attachments
         $company->addresses()->attach($address_pm->id, [
             'address_type'  => 'head-office',
             'status'        => 'current',
         ]);
-        $company->categories()->attach($contact_lead->id);
 
         $contact->addresses()->attach($address_pm->id, [
             'address_type'  => 'office',
             'status'        => 'current',
             'start_date'    => '2010-05-11',
         ]);
-        $contact->categories()->attach($contact_lead->id);
 
         // Something to demonstrate name sorting
         $address_sa = Address::create([
@@ -68,7 +68,8 @@ class ContactSampleSeeder extends Seeder
 
         $company_sa = Company::create([
             'company_name'  => 'South African Rugby Union',
-            'website'       => 'http://www.sarugby.net/'
+            'website'       => 'http://www.sarugby.net/',
+            'category_id'   => $contact_lead->id,
         ]);
 
         $contact_sa = Contact::create([
@@ -77,10 +78,10 @@ class ContactSampleSeeder extends Seeder
             'sort_order'    => 'nl',
             'company_id'    => $company_sa->id,
             'position'      => 'Scrum Half',
+            'category_id'   => $contact_lead->id,
         ]);
 
         $company_sa->addresses()->attach($address_sa->id);
-        $company_sa->categories()->attach($contact_lead->id);
 
         $contact_sa->addresses()->attach($address_sa->id, [
             'address_type'  => 'office',
@@ -88,6 +89,5 @@ class ContactSampleSeeder extends Seeder
             'start_date'    => '1993-02-11',
             'end_date'      => '2003-09-09',
         ]);
-        $contact_sa->categories()->attach($contact_lead->id);
     }
 }
