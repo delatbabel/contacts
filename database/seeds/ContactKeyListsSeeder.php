@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use Delatbabel\Keylists\Models\Keytype;
 use Delatbabel\Keylists\Models\Keyvalue;
+use Illuminate\Database\Seeder;
 
 class ContactKeyListsSeeder extends Seeder
 {

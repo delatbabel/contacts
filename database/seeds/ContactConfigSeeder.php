@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use Delatbabel\SiteConfig\Facades\SiteConfigSaver;
+use Illuminate\Database\Seeder;
 
 class ContactConfigSeeder extends Seeder
 {

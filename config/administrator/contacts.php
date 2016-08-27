@@ -6,7 +6,7 @@
  * @link https://github.com/ddpro/admin/blob/master/docs/model-configuration.md
  */
 
-return array(
+return [
 
     'title' => 'Contacts',
 
@@ -17,87 +17,87 @@ return array(
     /**
      * The display columns
      */
-    'columns' => array(
+    'columns' => [
         'id',
-        'sorted_name' => array(
+        'sorted_name' => [
             'title' => 'Name',
-        ),
-    ),
+        ],
+    ],
 
     /**
      * The filter set
      */
-    'filters' => array(
-        'sorted_name' => array(
+    'filters' => [
+        'sorted_name' => [
             'title' => 'Name',
-        ),
-    ),
+        ],
+    ],
 
     /**
      * The editable fields
      */
-    'edit_fields' => array(
-        'first_name' => array(
+    'edit_fields' => [
+        'first_name' => [
             'title' => 'First Name',
-            'type' => 'text',
-        ),
-        'last_name' => array(
+            'type'  => 'text',
+        ],
+        'last_name' => [
             'title' => 'Last Name',
-            'type' => 'text',
-        ),
-        'sort_order' => array(
-            'title' => 'Sort Order',
-            'type' => 'enum',
-            'options' => array(
+            'type'  => 'text',
+        ],
+        'sort_order' => [
+            'title'   => 'Sort Order',
+            'type'    => 'enum',
+            'options' => [
                 'en'    => 'English: Lastname, Firstname',
                 'cn'    => 'Asian: Firstname Lastname',
-                'nl'    => 'NL/DE/ZA: Lastname (van/von/der), Firstname')
-        ),
-        'company' => array(
-            'title' => 'Company',
-            'type' => 'relationship',
-            'name_field' => 'company_name',
+                'nl'    => 'NL/DE/ZA: Lastname (van/von/der), Firstname']
+        ],
+        'company' => [
+            'title'              => 'Company',
+            'type'               => 'relationship',
+            'name_field'         => 'company_name',
             'options_sort_field' => 'company_name',
-        ),
-        'position' => array(
+        ],
+        'position' => [
             'title' => 'Position',
-            'type' => 'text',
-        ),
-        'email' => array(
+            'type'  => 'text',
+        ],
+        'email' => [
             'title' => 'Email',
-            'type' => 'text',
-        ),
-        'phone' => array(
+            'type'  => 'text',
+        ],
+        'phone' => [
             'title' => 'Phone',
-            'type' => 'text',
-        ),
-        'mobile' => array(
+            'type'  => 'text',
+        ],
+        'mobile' => [
             'title' => 'Mobile Phone',
-            'type' => 'text',
-        ),
-        'fax' => array(
+            'type'  => 'text',
+        ],
+        'fax' => [
             'title' => 'Fax',
-            'type' => 'text',
-        ),
-        'timezone' => array(
+            'type'  => 'text',
+        ],
+        'timezone' => [
             'title' => 'Time Zone',
-            'type' => 'text',
-        ),
-        'category' => array(
-            'title' => 'Category',
-            'type' => 'relationship',
-            'name_field' => 'name',
+            'type'  => 'text',
+        ],
+        'category' => [
+            'title'           => 'Category',
+            'type'            => 'relationship',
+            'name_field'      => 'name',
             'name_sort_order' => 'name',
-        ),
-        'notes' => array(
+        ],
+        'notes' => [
             'title' => 'Notes',
-            'type' => 'textarea',
-        ),
-        'extended_data' => array(
+            'type'  => 'textarea',
+        ],
+        'extended_data' => [
             'title' => 'Extended Data',
-            'type' => 'textarea',
-        ),
-    ),
+            'type'  => 'textarea',
+        ],
+    ],
 
     'form_width' => 400,
-);
+];

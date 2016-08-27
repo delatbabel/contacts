@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreateContactsTables extends Migration {
+class CreateContactsTables extends Migration
+{
 
     /**
      * Run the migrations.
@@ -12,8 +13,7 @@ class CreateContactsTables extends Migration {
      */
     public function up()
     {
-        Schema::create('addresses', function(Blueprint $table)
-        {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
             // Multi line street address if required.
             $table->text('street')->nullable();
@@ -36,8 +36,7 @@ class CreateContactsTables extends Migration {
             $table->softDeletes();
         });
 
-        Schema::create('companies', function(Blueprint $table)
-        {
+        Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('category_id')->unsigned()->nullable();
             $table->string('company_name', 255)->nullable()->index();
@@ -58,8 +57,7 @@ class CreateContactsTables extends Migration {
                 ->onUpdate('cascade');
         });
 
-        Schema::create('contacts', function(Blueprint $table)
-        {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('company_id')->unsigned()->nullable();
             $table->integer('category_id')->unsigned()->nullable();
@@ -94,8 +92,7 @@ class CreateContactsTables extends Migration {
                 ->onUpdate('cascade');
         });
 
-        Schema::create('crms', function(Blueprint $table)
-        {
+        Schema::create('crms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('crm_name', 255)->index();
             $table->string('crm_description', 255)->nullable();
@@ -117,8 +114,7 @@ class CreateContactsTables extends Migration {
         // Laravel doesn't handle > 2 foreign keys on a pivot table
         // particularly well.  Also it reduces the number of cross
         // table joins which makes queries a bit more efficient.
-        Schema::create('address_contact', function(Blueprint $table)
-        {
+        Schema::create('address_contact', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('address_id')->unsigned();
             $table->integer('contact_id')->unsigned();
@@ -137,8 +133,7 @@ class CreateContactsTables extends Migration {
                 ->onUpdate('cascade');
         });
 
-        Schema::create('address_company', function(Blueprint $table)
-        {
+        Schema::create('address_company', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('address_id')->unsigned();
             $table->integer('company_id')->unsigned();

@@ -7,12 +7,12 @@
 
 namespace Delatbabel\Contacts\Models;
 
-use Delatbabel\Fluents\Fluents;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Model;
 use Delatbabel\Applog\Models\Auditable;
+use Delatbabel\Fluents\Fluents;
 use Delatbabel\Keylists\Models\Keyvalue;
 use Delatbabel\NestedCategories\Models\Category;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Contact Model
@@ -89,36 +89,46 @@ class Contact extends Model
 
         // addresses, essay titles ... and anything else
         $all_uppercase = 'Po|Rr|Se|Sw|Ne|Nw';
-        $prefixes = "Mc|Mac";
-        $suffixes = "'S";
+        $prefixes      = "Mc|Mac";
+        $suffixes      = "'S";
 
         // captialize all first letters
         $str = preg_replace_callback('/\\b(\\w)/',
-            function ($matches) {return strtoupper($matches[1]); },
+            function ($matches) {
+                return strtoupper($matches[1]);
+            },
             strtolower(trim($str))
         );
 
         // capitalize acronymns and initialisms e.g. PO
         $str = preg_replace_callback("/\\b($all_uppercase)/",
-            function ($matches) {return strtoupper($matches[1]); },
+            function ($matches) {
+                return strtoupper($matches[1]);
+            },
             $str
         );
 
         // decapitalize short words e.g. van der
         $str = preg_replace_callback("/\\b($all_lowercase)/",
-            function ($matches) {return strtolower($matches[1]); },
+            function ($matches) {
+                return strtolower($matches[1]);
+            },
             $str
         );
 
         // capitalize letter after certain name prefixes e.g 'Mc'
         $str = preg_replace_callback("/\\b($prefixes)(\\w)/",
-            function ($matches) {return $matches[1] . strtoupper($matches[2]); },
+            function ($matches) {
+                return $matches[1] . strtoupper($matches[2]);
+            },
             $str
         );
 
         // decapitalize certain word suffixes e.g. 's
         $str = preg_replace_callback("/(\\w)($suffixes)\\b/",
-            function ($matches) {return $matches[1] . strtolower($matches[2]); },
+            function ($matches) {
+                return $matches[1] . strtolower($matches[2]);
+            },
             $str
         );
 
@@ -140,16 +150,16 @@ class Contact extends Model
             return $this;
         }
 
-        $cfn = $this->capitaliseName($this->first_name);
-        $cln = $this->capitaliseName($this->last_name);
+        $cfn             = $this->capitaliseName($this->first_name);
+        $cln             = $this->capitaliseName($this->last_name);
         $this->full_name = $cfn . ' ' . $cln;
 
         switch ($this->sort_order) {
             case 'nl':
                 $ln_split = explode(' ', $cln);
-                $end = array_pop($ln_split);
+                $end      = array_pop($ln_split);
                 array_unshift($ln_split, $end);
-                $sort_ln = implode(' ', $ln_split);
+                $sort_ln           = implode(' ', $ln_split);
                 $this->sorted_name = $sort_ln . ', ' . $cfn;
                 break;
 
