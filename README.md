@@ -1,5 +1,9 @@
 # Contacts
 
+[![StyleCI](https://styleci.io/repos/51966591/shield)](https://styleci.io/repos/51966591)
+[![Latest Stable Version](https://poser.pugx.org/delatbabel/contacts/version.png)](https://packagist.org/packages/ddpro/contacts)
+[![Total Downloads](https://poser.pugx.org/delatbabel/contacts/d/total.png)](https://packagist.org/packages/delatbabel/contacts)
+
 A package to do simple contact management and storage for Laravel.
 
 Ideal for use for e-commerce, CRM or other systems where contact management needs to be done.
