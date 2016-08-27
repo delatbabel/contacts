@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use Delatbabel\Contacts\Models\Address;
 use Delatbabel\Contacts\Models\Company;
 use Delatbabel\Contacts\Models\Contact;
 use Delatbabel\NestedCategories\Models\Category;
+use Illuminate\Database\Seeder;
 
 class ContactSampleSeeder extends Seeder
 {

@@ -6,7 +6,7 @@
  * @link https://github.com/ddpro/admin/blob/master/docs/model-configuration.md
  */
 
-return array(
+return [
 
     'title' => 'Companies',
 
@@ -17,72 +17,72 @@ return array(
     /**
      * The display columns
      */
-    'columns' => array(
+    'columns' => [
         'id',
-        'company_name' => array(
+        'company_name' => [
             'title' => 'Company Name',
-        ),
-        'contact_name' => array(
+        ],
+        'contact_name' => [
             'title' => 'Contact Name',
-        ),
-    ),
+        ],
+    ],
 
     /**
      * The filter set
      */
-    'filters' => array(
-        'company_name' => array(
+    'filters' => [
+        'company_name' => [
             'title' => 'Company Name',
-        ),
-    ),
+        ],
+    ],
 
     /**
      * The editable fields
      */
-    'edit_fields' => array(
-        'company_name' => array(
+    'edit_fields' => [
+        'company_name' => [
             'title' => 'Company Name',
-            'type' => 'text',
-        ),
-        'contact_name' => array(
+            'type'  => 'text',
+        ],
+        'contact_name' => [
             'title' => 'Contact Name',
-            'type' => 'text',
-        ),
-        'contact_phone' => array(
+            'type'  => 'text',
+        ],
+        'contact_phone' => [
             'title' => 'Contact Phone',
-            'type' => 'text',
-        ),
-        'phone' => array(
+            'type'  => 'text',
+        ],
+        'phone' => [
             'title' => 'Company Phone',
-            'type' => 'text',
-        ),
-        'mobile' => array(
+            'type'  => 'text',
+        ],
+        'mobile' => [
             'title' => 'Company Mobile Phone',
-            'type' => 'text',
-        ),
-        'fax' => array(
+            'type'  => 'text',
+        ],
+        'fax' => [
             'title' => 'Company Fax',
-            'type' => 'text',
-        ),
-        'website' => array(
+            'type'  => 'text',
+        ],
+        'website' => [
             'title' => 'Company Website',
-            'type' => 'text',
-        ),
-        'category' => array(
-            'title' => 'Category',
-            'type' => 'relationship',
-            'name_field' => 'name',
+            'type'  => 'text',
+        ],
+        'category' => [
+            'title'           => 'Category',
+            'type'            => 'relationship',
+            'name_field'      => 'name',
             'name_sort_order' => 'name',
-        ),
-        'notes' => array(
+        ],
+        'notes' => [
             'title' => 'Notes',
-            'type' => 'textarea',
-        ),
-        'extended_data' => array(
+            'type'  => 'textarea',
+        ],
+        'extended_data' => [
             'title' => 'Extended Data',
-            'type' => 'textarea',
-        ),
-    ),
+            'type'  => 'textarea',
+        ],
+    ],
 
     'form_width' => 400,
-);
+];

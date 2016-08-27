@@ -7,11 +7,11 @@
 
 namespace Delatbabel\Contacts\Models;
 
+use Delatbabel\Applog\Models\Auditable;
 use Delatbabel\Fluents\Fluents;
 use Delatbabel\NestedCategories\Models\Category;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use Delatbabel\Applog\Models\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Company Model

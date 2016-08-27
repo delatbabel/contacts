@@ -7,12 +7,12 @@
 
 namespace Delatbabel\Contacts\Models;
 
-use Delatbabel\Fluents\Fluents;
-use Delatbabel\Keylists\Models\Keyvalue;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Model;
 use Config;
 use Delatbabel\Applog\Models\Auditable;
+use Delatbabel\Fluents\Fluents;
+use Delatbabel\Keylists\Models\Keyvalue;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Address Model
@@ -80,7 +80,7 @@ class Address extends Model
         }
 
         // Build query array
-        $query = [];
+        $query   = [];
         $query[] = $this->street       ?: '';
         $query[] = $this->suburb       ?: '';
         $query[] = $this->city         ?: '';
