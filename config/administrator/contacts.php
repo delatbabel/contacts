@@ -14,13 +14,25 @@ return [
 
     'model' => '\Delatbabel\Contacts\Models\Contact',
 
+    'server_side'   => true,
+
     /**
      * The display columns
      */
     'columns' => [
         'id',
         'sorted_name' => [
-            'title' => 'Name',
+            'title'     => 'Name',
+        ],
+        'company' => [
+            'title'     => 'Company',
+            'type'      => 'relationship',
+            'select'    => "(:table).company_name",
+        ],
+        'category' => [
+            'title'     => 'Category',
+            'type'      => 'relationship',
+            'select'    => '(:table).name',
         ],
     ],
 
@@ -29,7 +41,17 @@ return [
      */
     'filters' => [
         'sorted_name' => [
-            'title' => 'Name',
+            'title'         => 'Name',
+        ],
+        'company' => [
+            'type'          => 'relationship',
+            'title'         => 'Company',
+            'name_field'    => 'company_name',
+        ],
+        'category' => [
+            'title'         => 'Category',
+            'type'          => 'relationship',
+            'name_field'    => 'name',
         ],
     ],
 
