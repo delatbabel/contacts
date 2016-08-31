@@ -25,14 +25,16 @@ return [
             'title'     => 'Name',
         ],
         'company' => [
-            'title'     => 'Company',
-            'type'      => 'relationship',
-            'select'    => "(:table).company_name",
+            'title'         => 'Company',
+            'type'          => 'relationship',
+            'relationship'  => 'company',
+            'select'        => "(:table).company_name",
         ],
         'category' => [
-            'title'     => 'Category',
-            'type'      => 'relationship',
-            'select'    => '(:table).name',
+            'title'         => 'Category',
+            'type'          => 'relationship',
+            'relationship'  => 'category',
+            'select'        => '(:table).name',
         ],
     ],
 
