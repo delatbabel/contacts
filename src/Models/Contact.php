@@ -76,6 +76,36 @@ class Contact extends Model
         });
     }
 
+    // Mutators to ensure that nullable fields are correctly set to null not zero or empty
+
+    /**
+     * Set the company_id attribute
+     *
+     * @param $value
+     * @link https://laravel.com/docs/5.1/eloquent-mutators#accessors-and-mutators
+     */
+    public function setCompanyIdAttribute($value)
+    {
+        if (empty($value)) {
+            $value = null;
+        }
+        $this->attributes['company_id'] = $value;
+    }
+
+    /**
+     * Set the category_id attribute
+     *
+     * @param $value
+     * @link https://laravel.com/docs/5.1/eloquent-mutators#accessors-and-mutators
+     */
+    public function setCategoryIdAttribute($value)
+    {
+        if (empty($value)) {
+            $value = null;
+        }
+        $this->attributes['category_id'] = $value;
+    }
+
     /**
      * Attempt to capitalise a name.
      *
