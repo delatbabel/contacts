@@ -1,127 +1,113 @@
 <?php
-
 /**
  * Contacts model config
  *
  * @link https://github.com/ddpro/admin/blob/master/docs/model-configuration.md
  */
-
 return [
-
-    'title' => 'Contacts',
-
-    'single' => 'contact',
-
-    'model' => '\Delatbabel\Contacts\Models\Contact',
-
-    'server_side'   => true,
-
+    'title'              => 'Contacts',
+    'single'             => 'contact',
+    'model'              => \Delatbabel\Contacts\Models\Contact::class,
+    'server_side'        => true,
     /**
      * The display columns
      */
-    'columns' => [
-        'id',
+    'columns'            => [
+        'id'   => [
+            'title' => 'ID',
+        ],
         'sorted_name' => [
-            'title'     => 'Name',
+            'title' => 'Name',
         ],
-        'company' => [
-            'title'         => 'Company',
-            'type'          => 'relationship',
-            'relationship'  => 'company',
-            'select'        => "(:table).company_name",
+        'company'     => [
+            'title'        => 'Company',
+            'type'         => 'relationship',
+            'relationship' => 'company',
+            'select'       => "(:table).company_name",
         ],
-        'category' => [
-            'title'         => 'Category',
-            'type'          => 'relationship',
-            'relationship'  => 'category',
-            'select'        => '(:table).name',
+        'category'    => [
+            'title'        => 'Category',
+            'type'         => 'relationship',
+            'relationship' => 'category',
+            'select'       => '(:table).name',
         ],
     ],
-
     /**
      * The filter set
      */
-    'filters' => [
+    'filters'            => [
         'sorted_name' => [
-            'title'         => 'Name',
+            'title' => 'Name',
         ],
-        'company' => [
-            'type'          => 'relationship',
-            'title'         => 'Company',
-            'name_field'    => 'company_name',
+        'company'     => [
+            'type'       => 'relationship',
+            'title'      => 'Company',
+            'name_field' => 'company_name',
         ],
-        'category' => [
-            'title'         => 'Category',
-            'type'          => 'relationship',
-            'name_field'    => 'name',
+        'category'    => [
+            'title'      => 'Category',
+            'type'       => 'relationship',
+            'name_field' => 'name',
         ],
     ],
-
     /**
      * The editable fields
      */
-    'edit_fields' => [
-        'first_name' => [
-            'title' => 'First Name',
+    'form_request'       => \App\Http\Requests\ContactFormRequest::class,
+    'edit_fields'        => [
+        'first_name'    => [
+            'title' => 'First Name <span class="text-danger">*</span>',
             'type'  => 'text',
         ],
-        'last_name' => [
-            'title' => 'Last Name',
+        'last_name'     => [
+            'title' => 'Last Name <span class="text-danger">*</span>',
             'type'  => 'text',
         ],
-        'sort_order' => [
-            'title'   => 'Sort Order',
-            'type'    => 'enum',
-            'options' => [
-                'en'    => 'English: Lastname, Firstname',
-                'cn'    => 'Asian: Firstname Lastname',
-                'nl'    => 'NL/DE/ZA: Lastname (van/von/der), Firstname']
-        ],
-        'company' => [
+        'company'       => [
             'title'              => 'Company',
             'type'               => 'relationship',
             'name_field'         => 'company_name',
             'options_sort_field' => 'company_name',
         ],
-        'position' => [
+        'position'      => [
             'title' => 'Position',
             'type'  => 'text',
         ],
-        'email' => [
+        'email'         => [
             'title' => 'Email',
             'type'  => 'text',
         ],
-        'phone' => [
+        'phone'         => [
             'title' => 'Phone',
             'type'  => 'text',
         ],
-        'mobile' => [
+        'mobile'        => [
             'title' => 'Mobile Phone',
             'type'  => 'text',
         ],
-        'fax' => [
+        'fax'           => [
             'title' => 'Fax',
             'type'  => 'text',
         ],
-        'timezone' => [
+        'timezone'      => [
             'title' => 'Time Zone',
             'type'  => 'text',
         ],
-        'category' => [
+        'category'      => [
             'title'           => 'Category',
             'type'            => 'relationship',
             'name_field'      => 'name',
             'name_sort_order' => 'name',
         ],
-        'notes' => [
+        'notes'         => [
             'title' => 'Notes',
             'type'  => 'textarea',
         ],
         'extended_data' => [
-            'title' => 'Extended Data',
-            'type'  => 'textarea',
+            'title'  => 'Extended Data',
+            'type'   => 'json',
+            'height' => '400',
         ],
     ],
-
-    'form_width' => 400,
+    'controller_handler' => \App\Http\Controllers\ContactController::class,
 ];

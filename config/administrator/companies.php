@@ -12,13 +12,15 @@ return [
 
     'single' => 'company',
 
-    'model' => '\Delatbabel\Contacts\Models\Company',
+    'model'       => '\Delatbabel\Contacts\Models\Company',
 
     /**
      * The display columns
      */
-    'columns' => [
-        'id',
+    'columns'     => [
+        'id'   => [
+            'title' => 'ID',
+        ],
         'company_name' => [
             'title' => 'Company Name',
         ],
@@ -30,7 +32,7 @@ return [
     /**
      * The filter set
      */
-    'filters' => [
+    'filters'     => [
         'company_name' => [
             'title' => 'Company Name',
         ],
@@ -40,11 +42,11 @@ return [
      * The editable fields
      */
     'edit_fields' => [
-        'company_name' => [
+        'company_name'  => [
             'title' => 'Company Name',
             'type'  => 'text',
         ],
-        'contact_name' => [
+        'contact_name'  => [
             'title' => 'Contact Name',
             'type'  => 'text',
         ],
@@ -52,35 +54,36 @@ return [
             'title' => 'Contact Phone',
             'type'  => 'text',
         ],
-        'phone' => [
+        'phone'         => [
             'title' => 'Company Phone',
             'type'  => 'text',
         ],
-        'mobile' => [
+        'mobile'        => [
             'title' => 'Company Mobile Phone',
             'type'  => 'text',
         ],
-        'fax' => [
+        'fax'           => [
             'title' => 'Company Fax',
             'type'  => 'text',
         ],
-        'website' => [
+        'website'       => [
             'title' => 'Company Website',
             'type'  => 'text',
         ],
-        'category' => [
+        'category'      => [
             'title'           => 'Category',
             'type'            => 'relationship',
             'name_field'      => 'name',
             'name_sort_order' => 'name',
         ],
-        'notes' => [
+        'notes'         => [
             'title' => 'Notes',
             'type'  => 'textarea',
         ],
         'extended_data' => [
-            'title' => 'Extended Data',
-            'type'  => 'textarea',
+            'title'  => 'Extended Data',
+            'type'   => 'json',
+            'height' => '400',
         ],
     ],
 
