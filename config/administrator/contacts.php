@@ -53,7 +53,7 @@ return [
     /**
      * The editable fields
      */
-    'form_request'       => \App\Http\Requests\ContactFormRequest::class,
+    'form_request'       => \Delatbabel\Contacts\Http\Requests\ContactFormRequest::class,
     'edit_fields'        => [
         'first_name'    => [
             'title' => 'First Name <span class="text-danger">*</span>',
@@ -109,5 +109,5 @@ return [
             'height' => '400',
         ],
     ],
-    'controller_handler' => \App\Http\Controllers\ContactController::class,
+    'controller_handler' => \Delatbabel\Contacts\Http\Controllers\ContactController::class,
 ];
