@@ -30,7 +30,7 @@ class AddressFormRequest extends Request
      */
     public function rules()
     {
-        $countryID = Keytype::where('name', 'country_dialling')->firstOrFail()->id;
+        $countryID = Keytype::where('name', 'countries')->firstOrFail()->id;
 
         return [
             'street'       => 'required',

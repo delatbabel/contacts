@@ -48,7 +48,7 @@ class ContactController extends AdminModelController
         $arrData['addressStatusList'] = Address::getStatuses();
 
         // Fetch the country list.
-        $arrData['countryList'] = Keytype::where('name', 'country_dialling')
+        $arrData['countryList'] = Keytype::where('name', 'countries')
             ->firstOrFail()
             ->keyvalues()->orderBy('keyvalue')->get()
             ->lists('keyname', 'keyvalue')

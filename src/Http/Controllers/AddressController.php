@@ -39,7 +39,7 @@ class AddressController extends AdminModelController
         $arrData = $this->view->getData();
 
         // Fetch the country list.
-        $arrData['countryList'] = Keytype::where('name', 'country_dialling')
+        $arrData['countryList'] = Keytype::where('name', 'countries')
             ->firstOrFail()
             ->keyvalues()->orderBy('keyvalue')->get()
             ->lists('keyname', 'keyvalue')
