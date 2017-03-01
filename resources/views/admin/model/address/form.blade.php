@@ -43,7 +43,7 @@
                                 'enctype' => 'multipart/form-data',
                                 'route'   => ['admin_save_item',$config->getOption('name'),$itemId],
                             ]) !!}
-                        @include('adminmodel.address.partial_fields')
+                        @include('admin.model.address.partial_fields')
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <a href="{{route('admin_index', $config->getOption('name'))}}"

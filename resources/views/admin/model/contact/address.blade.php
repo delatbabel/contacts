@@ -18,7 +18,7 @@
                 {!! Form::hidden('address_id', null) !!}
                 {!! Form::hidden('mode', 'address') !!}
                 {!! Form::hidden('delete', 0) !!}
-                @include('adminmodel.address.partial_fields')
+                @include('admin.model.address.partial_fields')
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group {{$errors->has('address_type') ? 'has-error' : null}}">
