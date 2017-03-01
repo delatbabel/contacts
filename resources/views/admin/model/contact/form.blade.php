@@ -67,7 +67,7 @@
                                                         {!! $arrCol['title'] !!}
                                                     </label>
                                                     <div class="col-md-10">
-                                                        @include('adminmodel.field',[
+                                                        @include('admin.model.field',[
                                                            'type'         => $arrCol['type'],
                                                            'name'         => $arrCol['field_name'],
                                                            'id'           => $arrCol['field_name'],
@@ -99,7 +99,7 @@
                                 </div>
                                 <div id="tab-2" class="tab-pane">
                                     <div class="panel-body">
-                                        @include('adminmodel_contact.address')
+                                        @include('admin.model.contact.address')
                                     </div>
                                 </div>
                             </div>
