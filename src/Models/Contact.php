@@ -246,7 +246,7 @@ class Contact extends Model
     {
         $categories = Category::where('slug', '=', 'contact-types')
             ->first()
-            ->leaves();
+            ->getLeaves();
 
         /** @var array $result */
         $result = [];
