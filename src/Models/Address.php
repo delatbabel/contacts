@@ -108,6 +108,12 @@ class Address extends Model
         }
 
         $output = json_decode($geocode);
+
+        // Can't use a mutator inside an event function so do this instead.
+        $extended_data = json_decode($this->extended_data);
+        $extended_data['geocode'] = $output;
+        $this->extended_data = json_encode($extended_data);
+
         if (count($output->results) == 0 || empty($output->results[0])) {
             return $this;
         }
