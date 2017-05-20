@@ -71,7 +71,7 @@ class Contact extends Model
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($model) {
+        static::saving(function ($model) {
             return $model->fillFullName()->fillCompanyName();
         });
     }
@@ -176,10 +176,6 @@ class Contact extends Model
      */
     public function fillFullName()
     {
-        if (! empty($this->full_name)) {
-            return $this;
-        }
-
         $cfn             = $this->capitaliseName($this->first_name);
         $cln             = $this->capitaliseName($this->last_name);
         $this->full_name = $cfn . ' ' . $cln;
@@ -246,7 +242,7 @@ class Contact extends Model
     {
         $categories = Category::where('slug', '=', 'contact-types')
             ->first()
-            ->leaves();
+            ->getLeaves();
 
         /** @var array $result */
         $result = [];

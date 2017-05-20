@@ -72,10 +72,9 @@ class Company extends Model
      */
     public static function getCompanyTypes()
     {
-        $categories = Category::where('slug', '=', 'contact-types')
+        $categories = Category::where('slug', '=', 'company-types')
             ->first()
-            ->leaves();
-
+            ->getLeaves();
         /** @var array $result */
         $result = [];
 
