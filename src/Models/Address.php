@@ -62,7 +62,7 @@ class Address extends Model
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($model) {
+        static::saving(function ($model) {
             return $model->geocode();
         });
     }
@@ -84,9 +84,17 @@ class Address extends Model
         $query[] = $this->street       ?: '';
         $query[] = $this->suburb       ?: '';
         $query[] = $this->city         ?: '';
-        $query[] = $this->state_name   ?: '';
+        if (! empty($this->state_code)) {
+            $query[] = $this->state_code;
+        } else {
+            $query[] = $this->state_name   ?: '';
+        }
         $query[] = $this->postal_code  ?: '';
-        $query[] = $this->country_name ?: '';
+        if (! empty($this->country_code)) {
+            $query[] = $this->country_code;
+        } else {
+            $query[] = $this->country_name   ?: '';
+        }
 
         // Build query string from the array
         $query = trim(implode(',', array_filter($query)));
