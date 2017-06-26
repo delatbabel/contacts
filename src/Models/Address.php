@@ -109,7 +109,12 @@ class Address extends Model
 
         // Try to get geocoded address
         // FIXME -- replace this with a call to GuzzleHttp.
-        $geocode = file_get_contents($url);
+        try {
+            $geocode = file_get_contents($url);
+        } catch (\Exception $e) {
+            // timeouts and stuff
+            return $this;
+        }
 
         if (empty($geocode)) {
             return $this;
