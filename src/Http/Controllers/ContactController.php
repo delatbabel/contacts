@@ -39,7 +39,7 @@ class ContactController extends AdminModelController
 
         // Custom Data
         $arrData                = $this->view->getData();
-        $arrData['addressList'] = Address::lists('formatted_address', 'id')->toArray();
+        // $arrData['addressList'] = Address::lists('formatted_address', 'id')->toArray();
 
         // Fetch the Address Type list.
         $arrData['addressTypeList'] = Address::getTypes();;
