@@ -85,4 +85,58 @@ class Company extends Model
 
         return $result;
     }
+
+    /**
+     * Many:Many relationship with Category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categories()
+    {
+        return $this->belongsToMany('Delatbabel\NestedCategories\Models\Category');
+    }
+
+    /**
+     * Mutator for current_project_list field
+     *
+     * @param $value
+     * @return string
+     */
+    public function setCurrentProjectListAttribute($value)
+    {
+        $this->attributes['current_project_list'] = implode(',', $value);
+    }
+
+    /**
+     * Accessor for current_project_list field
+     *
+     * @param $value
+     * @return array
+     */
+    public function getCurrentProjectListAttribute($value)
+    {
+        return explode(',', $value);
+    }
+
+    /**
+     * Mutator for past_project_list field
+     *
+     * @param $value
+     * @return string
+     */
+    public function setPastProjectListAttribute($value)
+    {
+        $this->attributes['past_project_list'] = implode(',', $value);
+    }
+
+    /**
+     * Accessor for past_project_list field
+     *
+     * @param $value
+     * @return array
+     */
+    public function getPastProjectListAttribute($value)
+    {
+        return explode(',', $value);
+    }
 }
