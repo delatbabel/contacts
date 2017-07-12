@@ -104,7 +104,11 @@ class Company extends Model
      */
     public function setCurrentProjectListAttribute($value)
     {
-        $this->attributes['current_project_list'] = implode(',', $value);
+        if (! empty($value) && is_array($value) && count($value) > 0) {
+            $this->attributes['current_project_list'] = implode(',', $value);
+        } else {
+            $this->attributes['current_project_list'] = null;
+        }
     }
 
     /**
@@ -115,7 +119,10 @@ class Company extends Model
      */
     public function getCurrentProjectListAttribute($value)
     {
-        return explode(',', $value);
+        if (! empty($value)) {
+            return explode(',', $value);
+        }
+        return [];
     }
 
     /**
