@@ -133,7 +133,11 @@ class Company extends Model
      */
     public function setPastProjectListAttribute($value)
     {
-        $this->attributes['past_project_list'] = implode(',', $value);
+        if (! empty($value) && is_array($value) && count($value) > 0) {
+            $this->attributes['past_project_list'] = implode(',', $value);
+        } else {
+            $this->attributes['past_project_list'] = null;
+        }
     }
 
     /**
@@ -144,6 +148,9 @@ class Company extends Model
      */
     public function getPastProjectListAttribute($value)
     {
-        return explode(',', $value);
+        if (! empty($value)) {
+            return explode(',', $value);
+        }
+        return [];
     }
 }
