@@ -46,6 +46,15 @@ class CreateContactsTables extends Migration
             $table->string('mobile', 255)->nullable();
             $table->string('fax', 255)->nullable();
             $table->string('website', 255)->nullable();
+            $table->string('invoice_email', 255)->nullable();
+            $table->string('established', 255)->nullable();
+            $table->string('size', 255)->nullable();
+            $table->string('facebook', 255)->nullable();
+            $table->string('instagram', 255)->nullable();
+            $table->string('linkedin', 255)->nullable();
+            $table->string('logo', 255)->nullable();
+            $table->longText('current_project_list')->nullable();
+            $table->longText('past_project_list')->nullable();
             $table->longText('notes')->nullable();
             $table->longText('extended_data')->nullable();
             $table->timestamps();
@@ -151,6 +160,24 @@ class CreateContactsTables extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
+
+        Schema::create('category_company', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('category_id')->unsigned();
+            $table->integer('company_id')->unsigned();
+            $table->nullableTimestamps();
+
+            $table->unique(['category_id', 'company_id']);
+
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('company_id')
+                ->references('id')->on('companies')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
     }
 
     /**
@@ -160,6 +187,7 @@ class CreateContactsTables extends Migration
      */
     public function down()
     {
+        Schema::drop('category_company');
         Schema::drop('address_company');
         Schema::drop('address_contact');
 

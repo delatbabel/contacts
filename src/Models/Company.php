@@ -1,9 +1,4 @@
 <?php
-/**
- * Company Model
- *
- * @author Del
- */
 
 namespace Delatbabel\Contacts\Models;
 
@@ -26,7 +21,9 @@ class Company extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'extended_data'     => 'array',
+        'extended_data'         => 'array',
+        'current_project_list'  => 'array',
+        'past_project_list'     => 'array',
     ];
 
     /**
@@ -51,6 +48,16 @@ class Company extends Model
     }
 
     /**
+     * Many:Many relationship with Category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categories()
+    {
+        return $this->belongsToMany('Delatbabel\NestedCategories\Models\Category');
+    }
+
+    /**
      * 1:Many relationship with Contact
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
@@ -58,6 +65,34 @@ class Company extends Model
     public function contacts()
     {
         return $this->hasMany('Delatbabel\Contacts\Models\Contact');
+    }
+
+    /**
+     * Get the current address for the company.
+     *
+     * @param array $addressTypes
+     * @return Address|null
+     */
+    public function getCurrentAddress($addressTypes = null)
+    {
+        // Provide some sensible default for addressTypes
+        if (empty($addressTypes)) {
+            $addressTypes = ['head-office', 'office', 'contact', 'branch-office', 'billing', 'shipping'];
+        }
+
+        // Cycle through the address types until we get a hit
+        foreach ($addressTypes as $addressType) {
+            $address = $this->addresses()
+                ->wherePivot('address_type', '=', $addressType)
+                ->wherePivot('status', '=', 'current')
+                ->first();
+            if (! empty($address)) {
+                return $address;
+            }
+        }
+
+        // No hits, return null
+        return null;
     }
 
     /**
@@ -84,73 +119,5 @@ class Company extends Model
         }
 
         return $result;
-    }
-
-    /**
-     * Many:Many relationship with Category
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function categories()
-    {
-        return $this->belongsToMany('Delatbabel\NestedCategories\Models\Category');
-    }
-
-    /**
-     * Mutator for current_project_list field
-     *
-     * @param $value
-     * @return string
-     */
-    public function setCurrentProjectListAttribute($value)
-    {
-        if (! empty($value) && is_array($value) && count($value) > 0) {
-            $this->attributes['current_project_list'] = implode(',', $value);
-        } else {
-            $this->attributes['current_project_list'] = null;
-        }
-    }
-
-    /**
-     * Accessor for current_project_list field
-     *
-     * @param $value
-     * @return array
-     */
-    public function getCurrentProjectListAttribute($value)
-    {
-        if (! empty($value)) {
-            return explode(',', $value);
-        }
-        return [];
-    }
-
-    /**
-     * Mutator for past_project_list field
-     *
-     * @param $value
-     * @return string
-     */
-    public function setPastProjectListAttribute($value)
-    {
-        if (! empty($value) && is_array($value) && count($value) > 0) {
-            $this->attributes['past_project_list'] = implode(',', $value);
-        } else {
-            $this->attributes['past_project_list'] = null;
-        }
-    }
-
-    /**
-     * Accessor for past_project_list field
-     *
-     * @param $value
-     * @return array
-     */
-    public function getPastProjectListAttribute($value)
-    {
-        if (! empty($value)) {
-            return explode(',', $value);
-        }
-        return [];
     }
 }
