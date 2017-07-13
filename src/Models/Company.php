@@ -5,8 +5,10 @@ namespace Delatbabel\Contacts\Models;
 use Delatbabel\Applog\Models\Auditable;
 use Delatbabel\Fluents\Fluents;
 use Delatbabel\NestedCategories\Models\Category;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Fluent;
 
 /**
  * Company Model
@@ -93,6 +95,53 @@ class Company extends Model
 
         // No hits, return null
         return null;
+    }
+
+    /**
+     * Return the invoice name and email address.
+     *
+     * Due to some confusion as to which email address and name to use for sending invoices,
+     * this function returns a fluent with the attributes name and email for the correct
+     * address to send invoices to.  It uses the invoice_email as a priority, then the
+     * accounts_email, then the name and email address of the main contact of the company.
+     *
+     * @return Fluent|null
+     */
+    public function getInvoiceDetails()
+    {
+        if (! empty($this->invoice_email)) {
+            return new Fluent([
+                'name'  => $this->company_name,
+                'email' => $this->invoice_email
+            ]);
+        }
+
+        if (! empty($this->accounts_email)) {
+            return new Fluent([
+                'name'  => $this->company_name,
+                'email' => $this->accounts_email
+            ]);
+        }
+
+        /** @var Category $mainContactCategory */
+        $mainContactCategory = Category::where('description', '=', 'Contact Types > Main')->first();
+
+        /** @var Builder $contact_query */
+        $contact_query = Contact::where('company_id', '=', $this->id);
+        if (! empty($mainContactCategory)) {
+            $contact_query->where('category_id', '=', $mainContactCategory->id);
+        }
+
+        /** @var Contact $contact */
+        $contact = $contact_query->first();
+        if (empty($contact)) {
+            return null;
+        }
+
+        return new Fluent([
+            'name'  => $contact->full_name,
+            'email' => $contact->email,
+        ]);
     }
 
     /**
