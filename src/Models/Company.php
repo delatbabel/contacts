@@ -127,6 +127,8 @@ class Company extends Model
             'status'        => 'current',
             'start_date'    => Carbon::today(),
         ]);
+
+        return $this;
     }
 
     /**
@@ -154,6 +156,8 @@ class Company extends Model
             'status'        => 'current',
             'start_date'    => Carbon::today(),
         ]);
+
+        return $this;
     }
 
     /**
