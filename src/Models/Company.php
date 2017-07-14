@@ -2,6 +2,7 @@
 
 namespace Delatbabel\Contacts\Models;
 
+use Carbon\Carbon;
 use Delatbabel\Applog\Models\Auditable;
 use Delatbabel\Fluents\Fluents;
 use Delatbabel\NestedCategories\Models\Category;
@@ -95,6 +96,64 @@ class Company extends Model
 
         // No hits, return null
         return null;
+    }
+
+    /**
+     * Set the current address for the company
+     *
+     * This sets the current address for the company to be $address_id and expires
+     * any previous address of that same type.
+     *
+     * @param        $address_id
+     * @param string $addressType
+     * @return $this
+     */
+    public function setCurrentAddress($address_id, $addressType='head-office')
+    {
+        $current_address = $this->getCurrentAddress([$addressType]);
+
+        // If this is already the current address, do nothing and return.
+        if ($current_address->id == $address_id) {
+            return $this;
+        }
+
+        // Set the old address to be previous and make this the current address
+        $this->addresses()->updateExistingPivot($current_address->id, [
+            'status'    => 'previous',
+            'end_date'  => Carbon::yesterday(),
+        ]);
+        $this->addresses()->attach($address_id, [
+            'address-type'  => $addressType,
+            'status'        => 'current',
+            'start_date'    => Carbon::today(),
+        ]);
+    }
+
+    /**
+     * Add a current address for the company
+     *
+     * This sets the current address for the company to be $address_id but does not
+     * expire any previous address of that same type.
+     *
+     * @param        $address_id
+     * @param string $addressType
+     * @return $this
+     */
+    public function addCurrentAddress($address_id, $addressType='head-office')
+    {
+        $current_address = $this->getCurrentAddress([$addressType]);
+
+        // If this is already the current address, do nothing and return.
+        if ($current_address->id == $address_id) {
+            return $this;
+        }
+
+        // Make this the current address
+        $this->addresses()->attach($address_id, [
+            'address-type'  => $addressType,
+            'status'        => 'current',
+            'start_date'    => Carbon::today(),
+        ]);
     }
 
     /**
