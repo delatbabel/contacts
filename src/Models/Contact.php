@@ -329,7 +329,7 @@ class Contact extends Model
 
         // Make this the current address
         $this->addresses()->attach($address_id, [
-            'address-type'  => $addressType,
+            'address_type'  => $addressType,
             'status'        => 'current',
             'start_date'    => Carbon::today(),
         ]);
@@ -358,7 +358,7 @@ class Contact extends Model
 
         // Make this the current address
         $this->addresses()->attach($address_id, [
-            'address-type'  => $addressType,
+            'address_type'  => $addressType,
             'status'        => 'current',
             'start_date'    => Carbon::today(),
         ]);
