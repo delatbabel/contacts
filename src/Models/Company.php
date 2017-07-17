@@ -151,7 +151,7 @@ class Company extends Model
         $current_address = $this->getCurrentAddress([$addressType]);
 
         // If this is already the current address, do nothing and return.
-        if ($current_address->id == $address_id) {
+        if (! empty($current_address) && ($current_address->id == $address_id)) {
             return $this;
         }
 
