@@ -112,16 +112,21 @@ class Company extends Model
     {
         $current_address = $this->getCurrentAddress([$addressType]);
 
-        // If this is already the current address, do nothing and return.
-        if ($current_address->id == $address_id) {
-            return $this;
+        // If there is a current address then we may need to expire it.
+        if (! empty($current_address)) {
+            // If this is already the current address, do nothing and return.
+            if ($current_address->id == $address_id) {
+                return $this;
+            }
+
+            // Set the old address to be previous
+            $this->addresses()->updateExistingPivot($current_address->id, [
+                'status'    => 'previous',
+                'end_date'  => Carbon::yesterday(),
+            ]);
         }
 
-        // Set the old address to be previous and make this the current address
-        $this->addresses()->updateExistingPivot($current_address->id, [
-            'status'    => 'previous',
-            'end_date'  => Carbon::yesterday(),
-        ]);
+        // Make this the current address
         $this->addresses()->attach($address_id, [
             'address-type'  => $addressType,
             'status'        => 'current',
