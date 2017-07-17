@@ -88,7 +88,7 @@ class ContactController extends AdminModelController
                     'end_date'      => Carbon::yesterday(),
                 ]);
             } else {
-                
+
                 // Validate Contact Address
                 app(ContactAddressFormRequest::class);
 

@@ -18,6 +18,7 @@
                 {!! Form::hidden('address_id', null) !!}
                 {!! Form::hidden('mode', 'address') !!}
                 {!! Form::hidden('delete', 0) !!}
+                {!! Form::hidden('expire', 0) !!}
                 @include('admin.model.address.partial_fields')
                 <div class="row">
                     <div class="col-md-6">
@@ -128,6 +129,10 @@
                                    data-id="{{$item->id}}">
                                     Delete
                                 </a>
+                                <a href="#" class="btn btn-xs btn-sd-default btn-expire"
+                                   data-id="{{$item->id}}">
+                                    Expire
+                                </a>
                             </td>
                         </tr>
                     @endforeach
@@ -212,11 +217,19 @@
 
                     // Handle delete action
                     $('.btn-delete').click(function () {
-                        if (!confirm('Do you want remove this item ?')) {
+                        if (!confirm('Do you want to remove this item ?')) {
                             return;
                         }
                         var objData = $(this).data();
                         $('input:hidden[name="delete"]', _addressForm).val(1);
+                        $('input:hidden[name="address_id"]', _addressForm).val(objData.id);
+                        _addressForm.submit();
+                    });
+
+                    // Handle expire action
+                    $('.btn-expire').click(function () {
+                        var objData = $(this).data();
+                        $('input:hidden[name="expire"]', _addressForm).val(1);
                         $('input:hidden[name="address_id"]', _addressForm).val(objData.id);
                         _addressForm.submit();
                     });
