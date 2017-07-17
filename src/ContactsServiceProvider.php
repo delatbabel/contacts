@@ -41,7 +41,10 @@ class ContactsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config' => config_path()
         ], 'config');
-        // TODO: Instead of publishing the views, load them up into the database using a seeder.
+
+        // Old versions of the views which are loaded from resource/views.
+        // Should not need this because we will load views from the database, unless you
+        // have decided not to use viewpages to store views in the database.
         $this->publishes([
             __DIR__ . '/../resources/views' => base_path('resources/views')
         ], 'views');

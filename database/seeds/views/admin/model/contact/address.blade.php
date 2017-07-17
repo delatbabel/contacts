@@ -18,7 +18,6 @@
                 {!! Form::hidden('address_id', null) !!}
                 {!! Form::hidden('mode', 'address') !!}
                 {!! Form::hidden('delete', 0) !!}
-                {!! Form::hidden('expire', 0) !!}
                 @include('admin.model.address.partial_fields')
                 <div class="row">
                     <div class="col-md-6">
@@ -106,12 +105,12 @@
                     <tbody>
                     @foreach($model->addresses()->get() as $item)
                         <?php
-                        $tmpType = $item->pivot->address_type;
-                        $tmpStatus = $item->pivot->status;
-                        $tmpType = isset($addressTypeList[$tmpType]) ? $addressTypeList[$tmpType] : $tmpType;
-                        $tmpStatus = isset($addressStatusList[$tmpStatus]) ? $addressStatusList[$tmpStatus] : $tmpStatus;
+                        $tmpType                 = $item->pivot->address_type;
+                        $tmpStatus               = $item->pivot->status;
+                        $tmpType                 = isset($addressTypeList[$tmpType]) ? $addressTypeList[$tmpType] : $tmpType;
+                        $tmpStatus               = isset($addressStatusList[$tmpStatus]) ? $addressStatusList[$tmpStatus] : $tmpStatus;
                         $item->pivot->start_date = $item->pivot->start_date != '0000-00-00' ? $item->pivot->start_date : null;
-                        $item->pivot->end_date = $item->pivot->end_date != '0000-00-00' ? $item->pivot->end_date : null;
+                        $item->pivot->end_date   = $item->pivot->end_date != '0000-00-00' ? $item->pivot->end_date : null;
                         ?>
                         <tr>
                             <td>{{$item->id}}</td>
@@ -121,17 +120,13 @@
                             <td>{{$item->pivot->start_date}}</td>
                             <td>{{$item->pivot->end_date}}</td>
                             <td>
-                                <a href="#" class="btn btn-xs btn-success btn-edit"
+                                <a href="#" class="btn btn-xs btn-sd-default btn-edit"
                                    data-address_info="{{json_encode($item->toArray())}}">
-                                    <i class='fa fa-pencil'></i> Edit
+                                    Edit
                                 </a>
-                                <a href="#" class="btn btn-xs btn-danger btn-delete"
+                                <a href="#" class="btn btn-xs btn-sd-default btn-delete"
                                    data-id="{{$item->id}}">
-                                    <i class='fa fa-trash'></i> Delete
-                                </a>
-                                <a href="#" class="btn btn-xs btn-danger btn-expire"
-                                   data-id="{{$item->id}}">
-                                    <i class='fa fa-trash'></i> Expire
+                                    Delete
                                 </a>
                             </td>
                         </tr>
@@ -195,9 +190,9 @@
                         $.each(objData.address_info.pivot, function (key, value) {
                             if (['address_type', 'status'].indexOf(key) >= 0) {
                                 $('select[name="' + key + '"]', _addressForm)
-                                    .find('option[value="' + value + '"]')
-                                    .prop('selected', true)
-                                    .trigger("chosen:updated");
+                                        .find('option[value="' + value + '"]')
+                                        .prop('selected', true)
+                                        .trigger("chosen:updated");
                             } else if (['start_date', 'end_date'].indexOf(key) >= 0) {
                                 $('input[name="' + key + '"]', _addressForm).val(value);
                             }
@@ -205,9 +200,9 @@
                         $.each(objData.address_info, function (key, value) {
                             if (['country_code'].indexOf(key) >= 0) {
                                 $('select[name="' + key + '"]', _addressForm)
-                                    .find('option[value="' + value + '"]')
-                                    .prop('selected', true)
-                                    .trigger("chosen:updated");
+                                        .find('option[value="' + value + '"]')
+                                        .prop('selected', true)
+                                        .trigger("chosen:updated");
                             } else if (['street', 'suburb', 'city', 'state_name', 'postal_code', 'contact_name', 'contact_phone'].indexOf(key) >= 0) {
                                 $('input[name="' + key + '"]', _addressForm).val(value);
                             }
@@ -217,19 +212,11 @@
 
                     // Handle delete action
                     $('.btn-delete').click(function () {
-                        if (!confirm('Do you want to remove this item ?')) {
+                        if (!confirm('Do you want remove this item ?')) {
                             return;
                         }
                         var objData = $(this).data();
                         $('input:hidden[name="delete"]', _addressForm).val(1);
-                        $('input:hidden[name="address_id"]', _addressForm).val(objData.id);
-                        _addressForm.submit();
-                    });
-
-                    // Handle expire action
-                    $('.btn-expire').click(function () {
-                        var objData = $(this).data();
-                        $('input:hidden[name="expire"]', _addressForm).val(1);
                         $('input:hidden[name="address_id"]', _addressForm).val(objData.id);
                         _addressForm.submit();
                     });

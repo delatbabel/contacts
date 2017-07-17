@@ -2,6 +2,7 @@
 
 namespace Delatbabel\Contacts\Http\Controllers;
 
+use Carbon\Carbon;
 use Delatbabel\Contacts\Http\Requests\ContactAddressFormRequest;
 use DDPro\Admin\Http\Controllers\AdminModelController;
 use DDPro\Admin\Http\ViewComposers\ModelViewComposer;
@@ -76,9 +77,18 @@ class ContactController extends AdminModelController
             $contact = Contact::findOrFail($id);
 
             if ($this->request->delete) {
+
                 // Delete Address
                 $contact->addresses()->detach($this->request->address_id);
+            } elseif ($this->request->expire) {
+
+                // Expire Address
+                $contact->addresses()->updateExistingPivot($this->request->address_id, [
+                    'status'        => 'previous',
+                    'end_date'      => Carbon::yesterday(),
+                ]);
             } else {
+                
                 // Validate Contact Address
                 app(ContactAddressFormRequest::class);
 
