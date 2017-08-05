@@ -3,9 +3,9 @@
 namespace Delatbabel\Contacts\Http\Controllers;
 
 use Carbon\Carbon;
-use Delatbabel\Contacts\Http\Requests\ContactAddressFormRequest;
 use DDPro\Admin\Http\Controllers\AdminModelController;
 use DDPro\Admin\Http\ViewComposers\ModelViewComposer;
+use Delatbabel\Contacts\Http\Requests\ContactAddressFormRequest;
 use Delatbabel\Contacts\Models\Address;
 use Delatbabel\Contacts\Models\Contact;
 use Delatbabel\Keylists\Models\Keytype;
@@ -43,7 +43,7 @@ class ContactController extends AdminModelController
         // $arrData['addressList'] = Address::lists('formatted_address', 'id')->toArray();
 
         // Fetch the Address Type list.
-        $arrData['addressTypeList'] = Address::getTypes();;
+        $arrData['addressTypeList'] = Address::getTypes();
 
         // Fetch the Status list.
         $arrData['addressStatusList'] = Address::getStatuses();

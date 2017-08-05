@@ -2,9 +2,9 @@
 
 namespace Delatbabel\Contacts\Http\Controllers;
 
-use Delatbabel\Contacts\Http\Requests\AddressFormRequest;
 use DDPro\Admin\Http\Controllers\AdminModelController;
 use DDPro\Admin\Http\ViewComposers\ModelViewComposer;
+use Delatbabel\Contacts\Http\Requests\AddressFormRequest;
 use Delatbabel\Contacts\Models\Address;
 use Delatbabel\Keylists\Models\Keytype;
 
