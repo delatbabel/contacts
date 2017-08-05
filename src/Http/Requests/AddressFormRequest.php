@@ -2,8 +2,8 @@
 
 namespace Delatbabel\Contacts\Http\Requests;
 
-use Delatbabel\Keylists\Models\Keytype;
 use App\Http\Requests\Request;
+use Delatbabel\Keylists\Models\Keytype;
 
 /**
  * Validate Request for Address form - Create/Update
