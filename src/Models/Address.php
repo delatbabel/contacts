@@ -56,7 +56,7 @@ class Address extends Model
     /**
      * Model bootstrap
      *
-     * Ensure that the full_name field is filled even if it isn't initially provided.
+     * Geocode on save if enabled.
      *
      * @return void
      */
@@ -64,11 +64,12 @@ class Address extends Model
     {
         parent::boot();
 
-        // Bail out if geocoding is disabled or runs in the background.
-        if (! config('contacts.geocode.enable') || config('contacts.geocode_background')) {
+        // Bail out if geocoding runs in the background.
+        if (config('contacts.geocode.background')) {
             return;
         }
 
+        // If geocoding is not backgrounded then do it on every save
         static::saving(function ($model) {
             return $model->geocode();
         });
@@ -84,7 +85,7 @@ class Address extends Model
     public static function claim($claim_owner, $limit=0)
     {
         if (empty($limit)) {
-            $limit = config('contacts.geocode_background');
+            $limit = config('contacts.geocode.limit');
         }
 
         // Get a raw PDO connection
@@ -160,6 +161,16 @@ class Address extends Model
      */
     public function geocode()
     {
+        // Bail out if geocoding is disabled or already complete
+        if (! config('contacts.geocode.enable')) {
+            $this->geocode_status = 'disabled';
+            return $this;
+        }
+
+        if ($this->geocode_status == 'complete') {
+            return $this;
+        }
+
         // Build query array
         $query   = [];
         $query[] = $this->street       ?: '';
