@@ -26,8 +26,10 @@ class CreateContactsTables extends Migration
             $table->string('country_code', 8)->nullable();
             $table->string('contact_name', 255)->nullable();
             $table->string('contact_phone', 255)->nullable();
-            $table->text('formatted_address')->nullable();
             $table->string('place_id', 255)->nullable()->index();
+            $table->string('geocode_status', 255)->default('pending');
+            $table->integer('lock_owner')->nullable()->index();
+            $table->text('formatted_address')->nullable();
             $table->decimal('lat', 10, 6)->nullable();
             $table->decimal('lng', 10, 6)->nullable();
             $table->longText('notes')->nullable();
