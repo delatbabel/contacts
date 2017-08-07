@@ -231,7 +231,7 @@ class Address extends Model
         $this->extended_data      = json_encode($extended_data);
 
         // If we got a ZERO_RESULTS status then fail
-        if (! empty($output->status) && ($output->status='ZERO_RESULTS')) {
+        if (! empty($output->status) && ($output->status=='ZERO_RESULTS')) {
             $this->geocode_status='failed';
             return $this;
         }
