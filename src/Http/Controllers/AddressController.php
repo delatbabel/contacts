@@ -89,7 +89,6 @@ class AddressController extends AdminModelController
             'contact_name',
             'contact_phone',
         ]));
-        $model->geocode();
         $model->save();
 
         return $model;

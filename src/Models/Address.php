@@ -208,7 +208,12 @@ class Address extends Model
             return $this;
         }
 
+        // If we get an empty result, don't try this one again, because it will always
+        // get an empty result.  At the very least if the address can be geocoded, Google
+        // will return an error which we will put in extended_data (e.g. API limit
+        // exceeded, etc).
         if (empty($geocode)) {
+            $this->geocode_status='failed';
             return $this;
         }
 
@@ -219,6 +224,8 @@ class Address extends Model
         $extended_data['geocode'] = $output;
         $this->extended_data      = json_encode($extended_data);
 
+        // If we got output but nothing in the results then this is probably an API
+        // limit error or some such.  Leave it as pending and try again later.
         if (count($output->results) == 0 || empty($output->results[0])) {
             return $this;
         }
