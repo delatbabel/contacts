@@ -171,6 +171,12 @@ class Address extends Model
             return $this;
         }
 
+        // Bail out if there is no street address, we can't geocode those.
+        if (empty($this->street)) {
+            $this->getcode_status = 'failed';
+            return $this;
+        }
+
         // Build query array
         $query   = [];
         $query[] = $this->street       ?: '';
@@ -223,6 +229,12 @@ class Address extends Model
         $extended_data            = json_decode($this->extended_data, true);
         $extended_data['geocode'] = $output;
         $this->extended_data      = json_encode($extended_data);
+
+        // If we got a ZERO_RESULTS status then fail
+        if (! empty($output->status) && ($output->status='ZERO_RESULTS')) {
+            $this->geocode_status='failed';
+            return $this;
+        }
 
         // If we got output but nothing in the results then this is probably an API
         // limit error or some such.  Leave it as pending and try again later.
