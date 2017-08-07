@@ -173,7 +173,7 @@ class Address extends Model
 
         // Bail out if there is no street address, we can't geocode those.
         if (empty($this->street)) {
-            $this->getcode_status = 'failed';
+            $this->geocode_status = 'failed';
             return $this;
         }
 
