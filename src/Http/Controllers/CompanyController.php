@@ -56,14 +56,36 @@ class CompanyController extends AdminModelController
             ->lists('keyname', 'keyvalue')
             ->toArray();
 
+        $companyAddress = null;
         $contact = null;
-        if (Request::has('contact_id')) {
+        $contactAddress = null;
+
+        if (Request::has('company_address_id')) {
+            // Company address
+            $companyAddress = Address::whereHas('companies', function ($q){
+                $q->where('company_id', '=', Request::get('company_address_id'));
+            })->firstOrFail();
+            $mode = 'company_address';
+        } elseif (Request::has('contact_id')) {
             $contact = Contact::where('company_id', $itemId)
                 ->where('id', Request::get('contact_id'))
                 ->firstOrFail();
             $mode = 'contact';
+
+            // Contact address
+            if (Request::has('contact_address_id')) {
+                $contactAddress = Address::whereHas('contacts', function ($q){
+                    $q->where('contact_id', '=', Request::get('contact_address_id'));
+                })->firstOrFail();
+                $mode = 'contact_address';
+
+            }
         }
+
+        // Pass data to view
         $arrData['contact'] = $contact;
+        $arrData['contactAddress'] = $contactAddress;
+        $arrData['companyAddress'] = $companyAddress;
 
         // Keep current mode
         $arrData['mode'] = $mode;
