@@ -14,6 +14,7 @@ use Delatbabel\Keylists\Models\Keyvalue;
 use Delatbabel\NestedCategories\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Contact Model
@@ -63,6 +64,23 @@ class Contact extends Model
     }
 
     /**
+     * 1:1 relationship with User
+     *
+     * We don't actually create this relationship here, because User
+     * belongs to the application not the library, and there could be
+     * different implementations of the User model depending on the auth
+     * framework (such as Sentinel, etc).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    /*
+    public function user()
+    {
+        return $this->hasOne('App\Models\User');
+    }
+    */
+
+    /**
      * Model bootstrap
      *
      * Ensure that the full_name field is filled even if it isn't initially provided.
@@ -105,6 +123,31 @@ class Contact extends Model
             $value = null;
         }
         $this->attributes['category_id'] = $value;
+    }
+
+    /**
+     * Get display of last login attribute.
+     *
+     * This function is used by the admin panel to display a last login status for a
+     * contact.  It relies on there being a user_id in the contacts table and some kind
+     * of users table but does not assume the User model.
+     *
+     * @return string
+     */
+    public function getDisplayLastLoginAttribute()
+    {
+        if (empty($this->user_id)) {
+            return null;
+        }
+        $user = DB::table('users')->where('id', '=', $this->user_id)->first();
+        if (empty($user->last_login)) {
+            return null;
+        }
+
+        // If you want to customise the date format for display you can do it by setting
+        // this config variable.
+        $format = config('app.format.date_carbon', 'Y-m-d');
+        return Carbon::createFromFormat('Y-m-d H:i:s', $user->last_login)->format($format);
     }
 
     /**
