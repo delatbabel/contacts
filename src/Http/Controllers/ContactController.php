@@ -2,9 +2,10 @@
 
 namespace Delatbabel\Contacts\Http\Controllers;
 
-use Delatbabel\Contacts\Http\Requests\ContactAddressFormRequest;
+use Carbon\Carbon;
 use DDPro\Admin\Http\Controllers\AdminModelController;
 use DDPro\Admin\Http\ViewComposers\ModelViewComposer;
+use Delatbabel\Contacts\Http\Requests\ContactAddressFormRequest;
 use Delatbabel\Contacts\Models\Address;
 use Delatbabel\Contacts\Models\Contact;
 use Delatbabel\Keylists\Models\Keytype;
@@ -42,7 +43,7 @@ class ContactController extends AdminModelController
         // $arrData['addressList'] = Address::lists('formatted_address', 'id')->toArray();
 
         // Fetch the Address Type list.
-        $arrData['addressTypeList'] = Address::getTypes();;
+        $arrData['addressTypeList'] = Address::getTypes();
 
         // Fetch the Status list.
         $arrData['addressStatusList'] = Address::getStatuses();
@@ -76,9 +77,18 @@ class ContactController extends AdminModelController
             $contact = Contact::findOrFail($id);
 
             if ($this->request->delete) {
+
                 // Delete Address
                 $contact->addresses()->detach($this->request->address_id);
+            } elseif ($this->request->expire) {
+
+                // Expire Address
+                $contact->addresses()->updateExistingPivot($this->request->address_id, [
+                    'status'        => 'previous',
+                    'end_date'      => Carbon::yesterday(),
+                ]);
             } else {
+
                 // Validate Contact Address
                 app(ContactAddressFormRequest::class);
 

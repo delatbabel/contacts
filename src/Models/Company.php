@@ -1,17 +1,15 @@
 <?php
-/**
- * Company Model
- *
- * @author Del
- */
 
 namespace Delatbabel\Contacts\Models;
 
+use Carbon\Carbon;
 use Delatbabel\Applog\Models\Auditable;
 use Delatbabel\Fluents\Fluents;
 use Delatbabel\NestedCategories\Models\Category;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Fluent;
 
 /**
  * Company Model
@@ -26,7 +24,9 @@ class Company extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'extended_data'     => 'array',
+        'extended_data'         => 'array',
+        'current_project_list'  => 'array',
+        'past_project_list'     => 'array',
     ];
 
     /**
@@ -51,6 +51,16 @@ class Company extends Model
     }
 
     /**
+     * Many:Many relationship with Category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categories()
+    {
+        return $this->belongsToMany('Delatbabel\NestedCategories\Models\Category');
+    }
+
+    /**
      * 1:Many relationship with Contact
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
@@ -58,6 +68,148 @@ class Company extends Model
     public function contacts()
     {
         return $this->hasMany('Delatbabel\Contacts\Models\Contact');
+    }
+
+    /**
+     * Get the current address for the company.
+     *
+     * @param array $addressTypes
+     * @return Address|null
+     */
+    public function getCurrentAddress($addressTypes = null)
+    {
+        // Provide some sensible default for addressTypes
+        if (empty($addressTypes)) {
+            $addressTypes = ['head-office', 'office', 'contact', 'branch-office', 'billing', 'shipping'];
+        }
+
+        // Cycle through the address types until we get a hit
+        foreach ($addressTypes as $addressType) {
+            $address = $this->addresses()
+                ->wherePivot('address_type', '=', $addressType)
+                ->wherePivot('status', '=', 'current')
+                ->first();
+            if (! empty($address)) {
+                return $address;
+            }
+        }
+
+        // No hits, return null
+        return null;
+    }
+
+    /**
+     * Set the current address for the company
+     *
+     * This sets the current address for the company to be $address_id and expires
+     * any previous address of that same type.
+     *
+     * @param        $address_id
+     * @param string $addressType
+     * @return $this
+     */
+    public function setCurrentAddress($address_id, $addressType='head-office')
+    {
+        $current_address = $this->getCurrentAddress([$addressType]);
+
+        // If there is a current address then we may need to expire it.
+        if (! empty($current_address)) {
+            // If this is already the current address, do nothing and return.
+            if ($current_address->id == $address_id) {
+                return $this;
+            }
+
+            // Set the old address to be previous
+            $this->addresses()->updateExistingPivot($current_address->id, [
+                'status'    => 'previous',
+                'end_date'  => Carbon::yesterday(),
+            ]);
+        }
+
+        // Make this the current address
+        $this->addresses()->attach($address_id, [
+            'address_type'  => $addressType,
+            'status'        => 'current',
+            'start_date'    => Carbon::today(),
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * Add a current address for the company
+     *
+     * This sets the current address for the company to be $address_id but does not
+     * expire any previous address of that same type.
+     *
+     * @param        $address_id
+     * @param string $addressType
+     * @return $this
+     */
+    public function addCurrentAddress($address_id, $addressType='head-office')
+    {
+        $current_address = $this->getCurrentAddress([$addressType]);
+
+        // If this is already the current address, do nothing and return.
+        if (! empty($current_address) && ($current_address->id == $address_id)) {
+            return $this;
+        }
+
+        // Make this the current address
+        $this->addresses()->attach($address_id, [
+            'address_type'  => $addressType,
+            'status'        => 'current',
+            'start_date'    => Carbon::today(),
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * Return the invoice name and email address.
+     *
+     * Due to some confusion as to which email address and name to use for sending invoices,
+     * this function returns a fluent with the attributes name and email for the correct
+     * address to send invoices to.  It uses the invoice_email as a priority, then the
+     * accounts_email, then the name and email address of the main contact of the company.
+     *
+     * @return Fluent|null
+     */
+    public function getInvoiceDetails()
+    {
+        if (! empty($this->invoice_email)) {
+            return new Fluent([
+                'name'  => $this->company_name,
+                'email' => $this->invoice_email
+            ]);
+        }
+
+        if (! empty($this->accounts_email)) {
+            return new Fluent([
+                'name'  => $this->company_name,
+                'email' => $this->accounts_email
+            ]);
+        }
+
+        /** @var Category $mainContactCategory */
+        $mainContactCategory = Category::where('description', '=', 'Contact Types > Main')->first();
+
+        /** @var Builder $contact_query */
+        $contact_query = Contact::where('company_id', '=', $this->id);
+        if (! empty($mainContactCategory)) {
+            $contact_query->where('category_id', '=', $mainContactCategory->id);
+        }
+
+        /** @var Contact $contact */
+        $contact = $contact_query->first();
+        if (empty($contact)) {
+            return null;
+        }
+
+        return new Fluent([
+            'name'  => $contact->full_name,
+            'email' => $contact->email,
+        ]);
     }
 
     /**
@@ -84,59 +236,5 @@ class Company extends Model
         }
 
         return $result;
-    }
-
-    /**
-     * Many:Many relationship with Category
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function categories()
-    {
-        return $this->belongsToMany('Delatbabel\NestedCategories\Models\Category');
-    }
-
-    /**
-     * Mutator for current_project_list field
-     *
-     * @param $value
-     * @return string
-     */
-    public function setCurrentProjectListAttribute($value)
-    {
-        $this->attributes['current_project_list'] = implode(',', $value);
-    }
-
-    /**
-     * Accessor for current_project_list field
-     *
-     * @param $value
-     * @return array
-     */
-    public function getCurrentProjectListAttribute($value)
-    {
-        return explode(',', $value);
-    }
-
-    /**
-     * Mutator for past_project_list field
-     *
-     * @param $value
-     * @return string
-     */
-    public function setPastProjectListAttribute($value)
-    {
-        $this->attributes['past_project_list'] = implode(',', $value);
-    }
-
-    /**
-     * Accessor for past_project_list field
-     *
-     * @param $value
-     * @return array
-     */
-    public function getPastProjectListAttribute($value)
-    {
-        return explode(',', $value);
     }
 }

@@ -20,6 +20,8 @@ class ContactCategoriesSeeder extends CategoriesTableBaseArraySeeder
          */
         return [
             'Contact Types' => [
+                'Main'              => [],
+                'Extra'             => [],
                 'Lead'              => [],
                 'Potential'         => [],
                 'Account'           => [],

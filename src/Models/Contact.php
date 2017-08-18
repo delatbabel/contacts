@@ -7,12 +7,14 @@
 
 namespace Delatbabel\Contacts\Models;
 
+use Carbon\Carbon;
 use Delatbabel\Applog\Models\Auditable;
 use Delatbabel\Fluents\Fluents;
 use Delatbabel\Keylists\Models\Keyvalue;
 use Delatbabel\NestedCategories\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Contact Model
@@ -62,6 +64,23 @@ class Contact extends Model
     }
 
     /**
+     * 1:1 relationship with User
+     *
+     * We don't actually create this relationship here, because User
+     * belongs to the application not the library, and there could be
+     * different implementations of the User model depending on the auth
+     * framework (such as Sentinel, etc).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    /*
+    public function user()
+    {
+        return $this->hasOne('App\Models\User');
+    }
+    */
+
+    /**
      * Model bootstrap
      *
      * Ensure that the full_name field is filled even if it isn't initially provided.
@@ -104,6 +123,31 @@ class Contact extends Model
             $value = null;
         }
         $this->attributes['category_id'] = $value;
+    }
+
+    /**
+     * Get display of last login attribute.
+     *
+     * This function is used by the admin panel to display a last login status for a
+     * contact.  It relies on there being a user_id in the contacts table and some kind
+     * of users table but does not assume the User model.
+     *
+     * @return string
+     */
+    public function getDisplayLastLoginAttribute()
+    {
+        if (empty($this->user_id)) {
+            return null;
+        }
+        $user = DB::table('users')->where('id', '=', $this->user_id)->first();
+        if (empty($user->last_login)) {
+            return null;
+        }
+
+        // If you want to customise the date format for display you can do it by setting
+        // this config variable.
+        $format = config('app.format.date_carbon', 'Y-m-d');
+        return Carbon::createFromFormat('Y-m-d H:i:s', $user->last_login)->format($format);
     }
 
     /**
@@ -267,5 +311,101 @@ class Contact extends Model
     public static function getNameOrderRules()
     {
         return Keyvalue::getKeyValuesByType('name-order');
+    }
+
+    /**
+     * Get the current address for the contact.
+     *
+     * @param array $addressTypes
+     * @return Address|null
+     */
+    public function getCurrentAddress($addressTypes = null)
+    {
+        // Provide some sensible default for addressTypes
+        if (empty($addressTypes)) {
+            $addressTypes = ['contact', 'billing', 'shipping', 'home', 'office'];
+        }
+
+        // Cycle through the address types until we get a hit
+        foreach ($addressTypes as $addressType) {
+            $address = $this->addresses()
+                ->wherePivot('address_type', '=', $addressType)
+                ->wherePivot('status', '=', 'current')
+                ->first();
+            if (! empty($address)) {
+                return $address;
+            }
+        }
+
+        // No hits, return null
+        return null;
+    }
+
+    /**
+     * Set the current address for the contact
+     *
+     * This sets the current address for the contact to be $address_id and expires
+     * any previous address of that same type.
+     *
+     * @param        $address_id
+     * @param string $addressType
+     * @return $this
+     */
+    public function setCurrentAddress($address_id, $addressType='contact')
+    {
+        $current_address = $this->getCurrentAddress([$addressType]);
+
+        // If this is already the current address, do nothing and return.
+        // If there is a current address then we may need to expire it.
+        if (! empty($current_address)) {
+            // If this is already the current address, do nothing and return.
+            if ($current_address->id == $address_id) {
+                return $this;
+            }
+
+            // Set the old address to be previous
+            $this->addresses()->updateExistingPivot($current_address->id, [
+                'status'    => 'previous',
+                'end_date'  => Carbon::yesterday(),
+            ]);
+        }
+
+        // Make this the current address
+        $this->addresses()->attach($address_id, [
+            'address_type'  => $addressType,
+            'status'        => 'current',
+            'start_date'    => Carbon::today(),
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * Add a current address for the contact
+     *
+     * This sets the current address for the contact to be $address_id but does not
+     * expire any previous address of that same type.
+     *
+     * @param        $address_id
+     * @param string $addressType
+     * @return $this
+     */
+    public function addCurrentAddress($address_id, $addressType='contact')
+    {
+        $current_address = $this->getCurrentAddress([$addressType]);
+
+        // If this is already the current address, do nothing and return.
+        if (! empty($current_address) && ($current_address->id == $address_id)) {
+            return $this;
+        }
+
+        // Make this the current address
+        $this->addresses()->attach($address_id, [
+            'address_type'  => $addressType,
+            'status'        => 'current',
+            'start_date'    => Carbon::today(),
+        ]);
+
+        return $this;
     }
 }

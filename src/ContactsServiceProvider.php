@@ -7,6 +7,7 @@
 namespace Delatbabel\Contacts;
 
 use Delatbabel\Applog\DebugServiceProvider;
+use Delatbabel\Contacts\Commands\Geocode;
 use Delatbabel\Keylists\KeylistsServiceProvider;
 use Delatbabel\NestedCategories\NestedCategoriesServiceProvider;
 use Delatbabel\SiteConfig\SiteConfigServiceProvider;
@@ -24,6 +25,10 @@ use Illuminate\Support\ServiceProvider;
  */
 class ContactsServiceProvider extends ServiceProvider
 {
+    /** @var array list of commands to be registered in the service provider */
+    protected $moreCommands = [
+        Geocode::class,
+    ];
 
     /**
      * Bootstrap the application events.
@@ -41,7 +46,10 @@ class ContactsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config' => config_path()
         ], 'config');
-        // TODO: Instead of publishing the views, load them up into the database using a seeder.
+
+        // Old versions of the views which are loaded from resource/views.
+        // Should not need this because we will load views from the database, unless you
+        // have decided not to use viewpages to store views in the database.
         $this->publishes([
             __DIR__ . '/../resources/views' => base_path('resources/views')
         ], 'views');
@@ -52,6 +60,9 @@ class ContactsServiceProvider extends ServiceProvider
         $this->app->register(NestedCategoriesServiceProvider::class);
         $this->app->register(KeylistsServiceProvider::class);
         $this->app->register(SiteConfigServiceProvider::class);
+
+        // Define all commands
+        $this->commands($this->moreCommands);
     }
 
     /**
