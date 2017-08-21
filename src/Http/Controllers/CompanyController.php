@@ -9,6 +9,7 @@ use Delatbabel\Contacts\Http\Requests\ContactAddressFormRequest;
 use Delatbabel\Contacts\Models\Address;
 use Delatbabel\Contacts\Models\Contact;
 use Delatbabel\Keylists\Models\Keytype;
+use Delatbabel\NestedCategories\Models\Category;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -55,6 +56,9 @@ class CompanyController extends AdminModelController
             ->keyvalues()->orderBy('keyvalue')->get()
             ->lists('keyname', 'keyvalue')
             ->toArray();
+
+        // Fetch the contact category list
+        $arrData['contactCategories'] = Category::where('slug', 'contact-types')->first()->getDescendants(1)->lists('name', 'id')->all();
 
         $companyAddress = null;
         $contact = null;
