@@ -169,11 +169,16 @@ class CompanyController extends AdminModelController
                     }
                     break;
                 case 'contact':
-                    // Validate Contact
-                    app(CompanyContactFormRequest::class);
+                    if ($this->request->delete) {
+                        // Delete Contact
+                        $company->contacts()->detach($this->request->contact_id);
+                    } else {
+                        // Validate Contact
+                        app(CompanyContactFormRequest::class);
 
-                    // Create Contact
-                    app(ContactController::class)->saveContact($this->request->contact_id);
+                        // Create Contact
+                        app(ContactController::class)->saveContact($this->request->contact_id);
+                    }
 
                     break;
             }
