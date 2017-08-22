@@ -5,12 +5,11 @@ namespace Delatbabel\Contacts\Http\Requests;
 use App\Http\Requests\Request;
 
 /**
- * Validate Request for Contact form
+ * Validate Request for Contact form in Company's Contact tab
  *
- * Class ContactFormRequest
- * @package Delatbabel\Contacts\Http\Requests
+ * Class CompanyContactFormRequest
  */
-class ContactFormRequest extends Request
+class CompanyContactFormRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,20 +32,19 @@ class ContactFormRequest extends Request
             'first_name'    => 'required',
             'last_name'     => 'required',
             'email'         => 'required',
-            'company'       => 'required',
-            'category'      => 'required',
+            'category_id'   => 'required',
         ];
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Custom nice name
      *
      * @return array
      */
     public function attributes()
     {
         return [
-            'category' => 'type',
+            'category_id'   => 'type',
         ];
     }
 }

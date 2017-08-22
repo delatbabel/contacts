@@ -112,4 +112,31 @@ class ContactController extends AdminModelController
 
         return parent::save($modelName, $id);
     }
+
+    /**
+     * Share save contact process for another page (Company, ...)
+     *
+     * @param $id
+     * @return Contact
+     */
+    public function saveContact($id)
+    {
+        $model = $id ? Contact::findOrFail($id) : new Contact();
+        $model->fill($this->request->only([
+            'first_name',
+            'last_name',
+            'email',
+            'category_id',
+            'position',
+            'phone',
+            'mobile',
+            'fax',
+            'timezone',
+            'notes',
+            'extended_data',
+        ]));
+        $model->save();
+
+        return $model;
+    }
 }

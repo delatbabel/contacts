@@ -5,6 +5,7 @@ namespace Delatbabel\Contacts\Http\Controllers;
 use Carbon\Carbon;
 use DDPro\Admin\Http\Controllers\AdminModelController;
 use DDPro\Admin\Http\ViewComposers\ModelViewComposer;
+use Delatbabel\Contacts\Http\Requests\CompanyContactFormRequest;
 use Delatbabel\Contacts\Http\Requests\CompanyAddressFormRequest;
 use Delatbabel\Contacts\Http\Requests\ContactAddressFormRequest;
 use Delatbabel\Contacts\Models\Address;
@@ -166,6 +167,14 @@ class CompanyController extends AdminModelController
                             ]),
                         ], false);
                     }
+                    break;
+                case 'contact':
+                    // Validate Contact
+                    app(CompanyContactFormRequest::class);
+
+                    // Create Contact
+                    app(ContactController::class)->saveContact($this->request->contact_id);
+
                     break;
             }
             // Redirect back

@@ -6,7 +6,7 @@
  */
 return [
     'title'              => 'Contacts',
-    'single'             => 'contact',
+    'single'             => 'Contact',
     'model'              => \Delatbabel\Contacts\Models\Contact::class,
     'server_side'        => true,
     /**
@@ -26,11 +26,14 @@ return [
             'select'       => "(:table).company_name",
         ],
         'category'    => [
-            'title'        => 'Category',
+            'title'        => 'Type',
             'type'         => 'relationship',
             'relationship' => 'category',
             'select'       => '(:table).name',
         ],
+        'display_last_login' => [
+            'title' => 'Last Login'
+        ]
     ],
     /**
      * The filter set
@@ -45,15 +48,18 @@ return [
             'name_field' => 'company_name',
         ],
         'category'    => [
-            'title'      => 'Category',
-            'type'       => 'relationship',
-            'name_field' => 'name',
+            'title'                 => 'Type',
+            'type'                  => 'relationship',
+            'name_field'            => 'name',
+            'options_sort_field'    => 'name',
+            'options_filter'        => '\Delatbabel\NestedCategories\Helpers\CategoryHelper::filterCategoriesByParentSlug',
+            'options_filter_params' => ['contact-types']
         ],
     ],
     /**
      * The editable fields
      */
-    'form_request'       => \Delatbabel\Contacts\Http\Requests\ContactFormRequest::class,
+    'form_request'       => App\Modules\Contacts\Requests\ContactFormRequest::class,
     'edit_fields'        => [
         'first_name'    => [
             'title' => 'First Name <span class="text-danger">*</span>',
@@ -63,18 +69,25 @@ return [
             'title' => 'Last Name <span class="text-danger">*</span>',
             'type'  => 'text',
         ],
+        'email'         => [
+            'title' => 'Email <span class="text-danger">*</span>',
+            'type'  => 'text',
+        ],
         'company'       => [
-            'title'              => 'Company',
+            'title'              => 'Company <span class="text-danger">*</span>',
             'type'               => 'relationship',
             'name_field'         => 'company_name',
             'options_sort_field' => 'company_name',
         ],
+        'category'      => [
+            'title'           => 'Type <span class="text-danger">*</span>',
+            'type'            => 'relationship',
+            'name_field'      => 'name',
+            'name_sort_order' => 'name',
+            'options_filter' => '\Delatbabel\Contacts\Helpers\ContactHelper::getContactTypes'
+        ],
         'position'      => [
             'title' => 'Position',
-            'type'  => 'text',
-        ],
-        'email'         => [
-            'title' => 'Email',
             'type'  => 'text',
         ],
         'phone'         => [
@@ -92,12 +105,6 @@ return [
         'timezone'      => [
             'title' => 'Time Zone',
             'type'  => 'text',
-        ],
-        'category'      => [
-            'title'           => 'Category',
-            'type'            => 'relationship',
-            'name_field'      => 'name',
-            'name_sort_order' => 'name',
         ],
         'notes'         => [
             'title' => 'Notes',
