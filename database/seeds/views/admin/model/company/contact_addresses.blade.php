@@ -13,7 +13,7 @@
                 {!! Form::open([
                         'class'   => 'form-horizontal form-contact-address',
                         'enctype' => 'multipart/form-data',
-                        'route'   => ['admin_save_item',$config->getOption('name'),$itemId],
+                        'route'   => ['admin_save_item',$config->getOption('name'),$itemId, 'contact_id' => $contact->id],
                     ]) !!}
                 {!! Form::hidden('contact_address_id', isset($contactAddress) ? $contactAddress->id : null) !!}
                 {!! Form::hidden('mode', 'contact_address') !!}
