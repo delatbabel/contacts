@@ -84,7 +84,7 @@ return [
             'type'            => 'relationship',
             'name_field'      => 'name',
             'name_sort_order' => 'name',
-            'options_filter' => '\Delatbabel\Contacts\Helpers\ContactHelper::getContactTypes'
+            'options_filter'  => '\Delatbabel\Contacts\Helpers\ContactHelper::getContactTypes'
         ],
         'position'      => [
             'title' => 'Position',
