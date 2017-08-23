@@ -14,6 +14,7 @@ use Delatbabel\Contacts\Models\Company;
 use Delatbabel\Keylists\Models\Keytype;
 use Delatbabel\NestedCategories\Models\Category;
 use Illuminate\Support\Facades\Request;
+use Validator;
 
 /**
  * Custom Company Page
@@ -111,81 +112,154 @@ class CompanyController extends AdminModelController
             $company = Company::findOrFail($id);
             switch ($this->request->mode) {
                 case 'company_address':
-                    if ($this->request->delete) {
-                        // Delete Address
-                        $company->addresses()->detach($this->request->company_address_id);
-                    } elseif ($this->request->expire) {
-                        // Expire Address
-                        $company->addresses()->updateExistingPivot($this->request->company_address_id, [
-                            'status'        => 'previous',
-                            'end_date'      => Carbon::yesterday(),
-                        ]);
-                    } else {
-                        // Validate Company Address
-                        app(CompanyAddressFormRequest::class);
-
-                        // Create Address
-                        $address = app(AddressController::class)->saveAddress($this->request->company_address_id);
-
-                        // Update/Create Address
-                        $company->addresses()->sync([
-                            $address->id => $this->request->only([
-                                'address_type',
-                                'status',
-                                'start_date',
-                                'end_date',
-                            ]),
-                        ], false);
-                    }
+                    self::handleCompanyAddress($company);
                     break;
                 case 'contact_address':
-                    /** @var Contact $contact */
-                    $contact = Contact::findOrFail($id);
-                    if ($this->request->delete) {
-                        // Delete Address
-                        $contact->addresses()->detach($this->request->contact_address_id);
-                    } elseif ($this->request->expire) {
-                        // Expire Address
-                        $contact->addresses()->updateExistingPivot($this->request->contact_address_id, [
-                            'status'        => 'previous',
-                            'end_date'      => Carbon::yesterday(),
-                        ]);
-                    } else {
-                        // Validate Contact Address
-                        app(ContactAddressFormRequest::class);
-
-                        // Create Address
-                        $address = app(AddressController::class)->saveAddress($this->request->contact_address_id);
-
-                        // Update/Create Address
-                        $contact->addresses()->sync([
-                            $address->id => $this->request->only([
-                                'address_type',
-                                'status',
-                                'start_date',
-                                'end_date',
-                            ]),
-                        ], false);
-                    }
+                    self::handleContactAddress($company);
                     break;
                 case 'contact':
-                    if ($this->request->delete) {
-                        // Delete Contact
-                        $company->contacts()->detach($this->request->contact_id);
-                    } else {
-                        // Validate Contact
-                        app(CompanyContactFormRequest::class);
-
-                        // Create Contact
-                        app(ContactController::class)->saveContact($this->request->contact_id);
-                    }
-
+                    self::handleContact($company);
                     break;
             }
             // Redirect back
             return redirect()->back()->withInput($this->request->only(['mode']));
         } else {
             return parent::save($modelName, $id);
+        }
+    }
+
+    /**
+     * Handle Contact
+     *
+     * @param object $company
+     *
+     * @return mixed
+     */
+    private function handleContact($company) {
+        if ($this->request->delete) {
+            // Delete Contact
+            $company->contacts()->detach($this->request->contact_id);
+        } else {
+            // Validate Contact
+            app(CompanyContactFormRequest::class);
+
+            // Validate email
+            if ($this->request->contact_id) {
+                // Load Contact
+                $contact = Contact::findOrFail($this->request->contact_id);
+                // Rule to check that the email address is not already in use.
+                $emailRule = [
+                    'email'    => 'unique:contacts,email,' . $contact->id . '|unique:users,email,' . $contact->user_id
+                ];
+            } else {
+                // Rule to check that the email address is not already in use.
+                $emailRule = [
+                    'email'    => 'unique:contacts,email|unique:users,email'
+                ];
+            }
+            // Run the validation rule on the email field from the form
+            $validator = Validator::make($this->request->only('email'), $emailRule);
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            // Create Contact
+            if (!isset($contact)) {
+                $contact = new Contact();
+            }
+
+            $contact->fill($this->request->only([
+                'first_name',
+                'last_name',
+                'email',
+                'category_id',
+                'position',
+                'phone',
+                'mobile',
+                'fax',
+                'timezone',
+                'notes',
+                'extended_data',
+            ]));
+            $contact->company_id = $company->id;
+            $contact->save();
+        }
+    }
+
+    /**
+     * Handle Contact Address
+     *
+     * @param object $company
+     * @return mixed
+     */
+    private function handleContactAddress($company) {
+        /** @var Contact $contact */
+        $contact = Contact::where('id', $this->request->contact_id)
+            ->where('company_id', $company->id)
+            ->firstOrFail();
+        if ($this->request->delete) {
+            // Delete Address
+            $contact->addresses()->detach($this->request->contact_address_id);
+        } elseif ($this->request->expire) {
+            // Expire Address
+            $contact->addresses()->updateExistingPivot($this->request->contact_address_id, [
+                'status'        => 'previous',
+                'end_date'      => Carbon::yesterday(),
+            ]);
+        } else {
+            // Validate Contact Address
+            app(ContactAddressFormRequest::class);
+
+            // Create Address
+            $address = app(AddressController::class)->saveAddress($this->request->contact_address_id);
+
+            // Update/Create Address
+            $contact->addresses()->sync([
+                $address->id => $this->request->only([
+                    'address_type',
+                    'status',
+                    'start_date',
+                    'end_date',
+                ]),
+            ], false);
+        }
+    }
+
+    /**
+     * Handle Company Address
+     *
+     * @param object $company
+     * @return mixed
+     */
+    private function handleCompanyAddress($company) {
+        if ($this->request->delete) {
+            // Delete Address
+            $company->addresses()->detach($this->request->company_address_id);
+        } elseif ($this->request->expire) {
+            // Expire Address
+            $company->addresses()->updateExistingPivot($this->request->company_address_id, [
+                'status'        => 'previous',
+                'end_date'      => Carbon::yesterday(),
+            ]);
+        } else {
+            // Validate Company Address
+            app(CompanyAddressFormRequest::class);
+
+            // Create Address
+            $address = app(AddressController::class)->saveAddress($this->request->company_address_id);
+
+            // Update/Create Address
+            $company->addresses()->sync([
+                $address->id => $this->request->only([
+                    'address_type',
+                    'status',
+                    'start_date',
+                    'end_date',
+                ]),
+            ], false);
         }
     }
 }
