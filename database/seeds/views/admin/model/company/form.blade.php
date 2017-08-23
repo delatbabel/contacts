@@ -33,6 +33,7 @@
                                 @if($contact)
                                     <li class=""><a data-toggle="tab" href="#tab-4">Contact Addresses</a></li>
                                 @endif
+                                <li class=""><a data-toggle="tab" href="#tab-5">Subscriptions</a></li>
                             @endif
                         </ul>
                         <div class="tab-content">
@@ -106,6 +107,13 @@
                                         </div>
                                     </div>
                                 @endif
+                                <div id="tab-5" class="tab-pane" >
+                                    <div class="panel-body">
+                                        <div class="panel-body">
+                                            @include('admin.model.company.subscriptions')
+                                        </div>
+                                    </div>
+                                </div>
                             @endif
                         </div>
                     </div>
@@ -126,6 +134,8 @@
                 $('ul.nav-tabs a[href="#tab-3"]').trigger('click');
             }else if (_mode == 'contact_address') {
                 $('ul.nav-tabs a[href="#tab-4"]').trigger('click');
+            }else if (_mode == 'subscription') {
+                $('ul.nav-tabs a[href="#tab-5"]').trigger('click');
             } else {
                 $('ul.nav-tabs a[href="#tab-1"]').trigger('click');
             }

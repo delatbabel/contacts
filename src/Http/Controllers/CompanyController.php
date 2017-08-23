@@ -184,6 +184,7 @@ class CompanyController extends AdminModelController
                 'notes',
                 'extended_data',
             ]));
+            $contact->extended_data = json_decode($contact->extended_data);
             $contact->company_id = $company->id;
             $contact->save();
         }

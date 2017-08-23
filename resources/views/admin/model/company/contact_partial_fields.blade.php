@@ -106,13 +106,40 @@
     </div>
 </div>
 <div class="hr-line-dashed"></div>
+<?php
+    $value = old('extended_data', isset($contact) ? $contact->extended_data : null);
+    if (is_array($value)) {
+        $tmpValue = json_encode($value);
+    } elseif ($value instanceof \Illuminate\Contracts\Support\Arrayable) {
+        $tmpValue = json_encode($value->toArray());
+    } else {
+        $tmpValue = json_encode([]);
+    }
+?>
 <div class="form-group {{$errors->has('extended_data') ? 'has-error' : null}}">
     <label class="col-md-2 control-label" for="extended_data">
         Extended Data
     </label>
     <div class="col-md-10">
-        {!! Form::textarea('extended_data', old('extended_data', isset($contact) ? $contact->extended_data : null), ['class'=>'form-control', 'wysiwyg'=>'']) !!}
+        {!! Form::hidden('extended_data', $tmpValue, ['id'=>'contact_extended_data']) !!}
+        <div id="jsoneditor_contact_extended_data" style="height: 400px;"></div>
         @if ($errors->has('extended_data'))<p style="color:red;">{!!$errors->first('extended_data')!!}</p>@endif
     </div>
 </div>
 <div class="hr-line-dashed"></div>
+@section('javascript')
+    @parent
+    <script type="text/javascript">
+        $(function () {
+            var jsonString = {!! $tmpValue !!};
+            var editorJSON = new JSONEditor(document.getElementById("jsoneditor_contact_extended_data"), {
+                mode: 'tree',
+                modes: ['code', 'form', 'text', 'tree', 'view'],
+                onChange: function () {
+                    var tmpJSON = editorJSON.get();
+                    $("#jsoneditor_contact_extended_data").val(JSON.stringify(tmpJSON));
+                }
+            }, jsonString);
+        });
+    </script>
+@endsection
