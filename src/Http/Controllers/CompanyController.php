@@ -5,12 +5,12 @@ namespace Delatbabel\Contacts\Http\Controllers;
 use Carbon\Carbon;
 use DDPro\Admin\Http\Controllers\AdminModelController;
 use DDPro\Admin\Http\ViewComposers\ModelViewComposer;
-use Delatbabel\Contacts\Http\Requests\CompanyContactFormRequest;
 use Delatbabel\Contacts\Http\Requests\CompanyAddressFormRequest;
+use Delatbabel\Contacts\Http\Requests\CompanyContactFormRequest;
 use Delatbabel\Contacts\Http\Requests\ContactAddressFormRequest;
 use Delatbabel\Contacts\Models\Address;
-use Delatbabel\Contacts\Models\Contact;
 use Delatbabel\Contacts\Models\Company;
+use Delatbabel\Contacts\Models\Contact;
 use Delatbabel\Keylists\Models\Keytype;
 use Delatbabel\NestedCategories\Models\Category;
 use Illuminate\Support\Facades\Request;
@@ -46,7 +46,7 @@ class CompanyController extends AdminModelController
 
         // Custom Data
         $arrData = $this->view->getData();
-        $mode = null;
+        $mode    = null;
 
         // Fetch the Address Type list.
         $arrData['addressTypeList'] = Address::getTypes();
@@ -65,25 +65,25 @@ class CompanyController extends AdminModelController
         $arrData['contactCategories'] = Category::where('slug', 'contact-types')->first()->getDescendants(1)->lists('name', 'id')->all();
 
         $companyAddress = null;
-        $contact = null;
+        $contact        = null;
         $contactAddress = null;
 
         if (Request::has('company_address_id')) {
             // Company address
             $companyAddress = $arrData['model']->addresses()->findOrFail(Request::get('company_address_id'));
-            $mode = 'company_address';
+            $mode           = 'company_address';
         } elseif (Request::has('contact_id')) {
             $contact = $arrData['model']->contacts()->findOrFail(Request::get('contact_id'));
-            $mode = 'contact';
+            $mode    = 'contact';
             // Contact address
             if (Request::has('contact_address_id')) {
                 $contactAddress = $contact->addresses()->findOrFail(Request::get('contact_address_id'));
-                $mode = 'contact_address';
+                $mode           = 'contact_address';
             }
         }
 
         // Pass data to view
-        $arrData['contact'] = $contact;
+        $arrData['contact']        = $contact;
         $arrData['contactAddress'] = $contactAddress;
         $arrData['companyAddress'] = $companyAddress;
 
@@ -135,7 +135,8 @@ class CompanyController extends AdminModelController
      *
      * @return mixed
      */
-    private function handleContact($company) {
+    private function handleContact($company)
+    {
         if ($this->request->delete) {
             // Delete Contact
             $company->contacts()->detach($this->request->contact_id);
@@ -167,7 +168,7 @@ class CompanyController extends AdminModelController
             }
 
             // Create Contact
-            if (!isset($contact)) {
+            if (! isset($contact)) {
                 $contact = new Contact();
             }
 
@@ -195,7 +196,8 @@ class CompanyController extends AdminModelController
      * @param object $company
      * @return mixed
      */
-    private function handleContactAddress($company) {
+    private function handleContactAddress($company)
+    {
         /** @var Contact $contact */
         $contact = Contact::where('id', $this->request->contact_id)
             ->where('company_id', $company->id)
@@ -234,7 +236,8 @@ class CompanyController extends AdminModelController
      * @param object $company
      * @return mixed
      */
-    private function handleCompanyAddress($company) {
+    private function handleCompanyAddress($company)
+    {
         if ($this->request->delete) {
             // Delete Address
             $company->addresses()->detach($this->request->company_address_id);
