@@ -112,15 +112,16 @@ class CompanyController extends AdminModelController
             $company = Company::findOrFail($id);
             switch ($this->request->mode) {
                 case 'company_address':
-                    self::handleCompanyAddress($company);
+                    return self::handleCompanyAddress($company);
                     break;
                 case 'contact_address':
-                    self::handleContactAddress($company);
+                    return self::handleContactAddress($company);
                     break;
                 case 'contact':
-                    self::handleContact($company);
+                    return self::handleContact($company);
                     break;
             }
+
             // Redirect back
             return redirect()->back()->withInput($this->request->only(['mode']));
         } else {
@@ -135,7 +136,7 @@ class CompanyController extends AdminModelController
      *
      * @return mixed
      */
-    private function handleContact($company)
+    protected function handleContact($company)
     {
         if ($this->request->delete) {
             // Delete Contact
@@ -188,6 +189,9 @@ class CompanyController extends AdminModelController
             $contact->extended_data = json_decode($contact->extended_data);
             $contact->company_id = $company->id;
             $contact->save();
+
+            // Redirect back
+            return redirect()->back()->withInput($this->request->only(['mode']));
         }
     }
 
@@ -197,7 +201,7 @@ class CompanyController extends AdminModelController
      * @param object $company
      * @return mixed
      */
-    private function handleContactAddress($company)
+    protected function handleContactAddress($company)
     {
         /** @var Contact $contact */
         $contact = Contact::where('id', $this->request->contact_id)
@@ -229,6 +233,9 @@ class CompanyController extends AdminModelController
                 ]),
             ], false);
         }
+
+        // Redirect back
+        return redirect()->back()->withInput($this->request->only(['mode']));
     }
 
     /**
@@ -237,7 +244,7 @@ class CompanyController extends AdminModelController
      * @param object $company
      * @return mixed
      */
-    private function handleCompanyAddress($company)
+    protected function handleCompanyAddress($company)
     {
         if ($this->request->delete) {
             // Delete Address
@@ -265,5 +272,8 @@ class CompanyController extends AdminModelController
                 ]),
             ], false);
         }
+
+        // Redirect back
+        return redirect()->back()->withInput($this->request->only(['mode']));
     }
 }
