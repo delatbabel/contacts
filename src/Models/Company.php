@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Str;
 
 /**
  * Company Model
@@ -236,5 +237,65 @@ class Company extends Model
         }
 
         return $result;
+    }
+
+    //
+    // Social Media Links
+    //
+    // Format the social media links so that they are usable as clickable links
+    //
+
+    /**
+     * Get the facebook link URL
+     *
+     * @return mixed|string in the form https://www.facebook.com/name
+     */
+    public function getFacebookLinkAttribute()
+    {
+        if (Str::is('http*', $this->facebook)) {
+            return $this->facebook;
+        }
+
+        if (Str::is('*facebook.com*', $this->facebook)) {
+            return 'https://' . $this->facebook;
+        }
+
+        return 'https://www.facebook.com/' . $this->facebook;
+    }
+
+    /**
+     * Get the LinkedIn link URL
+     *
+     * @return mixed|string in the form https://www.linkedin.com/in/name
+     */
+    public function getLinkedinLinkAttribute()
+    {
+        if (Str::is('http*', $this->linkedin)) {
+            return $this->linkedin;
+        }
+
+        if (Str::is('*linkedin.com*', $this->linkedin)) {
+            return 'https://' . $this->linkedin;
+        }
+
+        return 'https://www.linkedin.com/in/' . $this->linkedin;
+    }
+
+    /**
+     * Get the instagram link URL
+     *
+     * @return mixed|string in the form https://www.instagram.com/name
+     */
+    public function getInstagramLinkAttribute()
+    {
+        if (Str::is('http*', $this->instagram)) {
+            return $this->instagram;
+        }
+
+        if (Str::is('*instagram.com*', $this->instagram)) {
+            return 'https://' . $this->instagram;
+        }
+
+        return 'https://www.instagram.com/' . $this->instagram;
     }
 }
