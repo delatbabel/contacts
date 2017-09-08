@@ -4,7 +4,7 @@
             <small>Information</small>
         </h5>
         <div class="ibox-tools">
-            <button id="add-company-address" class="btn btn-xs btn-primary">Add Company Address</button>
+            <button id="add-company-address" class="btn btn-xs btn-primary" ng-click="vm.addNew()">Add Company Address</button>
         </div>
     </div>
     <div class="ibox-content">
@@ -16,14 +16,17 @@
                         'route'   => ['admin_save_item',$config->getOption('name'),$itemId],
                     ]) !!}
                 {!! Form::hidden('company_address_id', isset($companyAddress) ? $companyAddress->id : null) !!}
+                <input name="mode" type="hidden" value="company_address" autocomplete="off">
                 {!! Form::hidden('mode', 'company_address') !!}
-                {!! Form::hidden('delete', 0) !!}
-                {!! Form::hidden('expire', 0) !!}
-                @include('admin.model.company.address_partial_fields', ['address' => $companyAddress])
-                <div class="form-group">
-                    <div class="col-sm-4 col-sm-offset-2">
-                        <a href="#" class="btn btn-default btn-cancel">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                {!! Form::hidden('delete', 0, ['ng-value'=>'vm.delete']) !!}
+                {!! Form::hidden('expire', 0, ['ng-value'=>'vm.expire']) !!}
+                <div class="form" ng-if="vm.IsDisplayForm || vm.IsEdit">
+                    @include('admin.model.company.address_partial_fields', ['address' => $companyAddress])
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <a href="#" ng-click="vm.hideForm(); $event.preventDefault();" class="btn btn-default btn-cancel">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
                     </div>
                 </div>
                 {!! Form::close() !!}
@@ -61,11 +64,11 @@
                                     Edit
                                 </a>
                                 <a href="#" class="btn btn-xs btn-sd-default btn-delete"
-                                   data-id="{{$item->id}}">
+                                   data-id="{{$item->id}}" ng-click="vm.deleteItem({{$item->id}}); $event.preventDefault();">
                                     Delete
                                 </a>
                                 <a href="#" class="btn btn-xs btn-sd-default btn-expire"
-                                   data-id="{{$item->id}}">
+                                   data-id="{{$item->id}}" ng-click="vm.expireItem({{$item->id}}); $event.preventDefault();">
                                     Expire
                                 </a>
                             </td>
@@ -77,19 +80,3 @@
         </div>
     </div>
 </div>
-
-@section('javascript')
-    @parent
-    <script src="{{ asset('packages/ddpro/admin/assets/js/companies/address.js') }}"></script>
-    <script type="text/javascript">
-        $(function () {
-            // Show form when there are errors
-            var _mode = '{{old('mode', $mode)}}';
-            var _hasError = {{count($errors)}};
-            var _isEdit = "{{Request::get('company_address_id') ? 'true' : 'false'}}";
-            var _addressForm = $(".form-address");
-
-            CompanyAddressHandle.init(_mode, _isEdit, _hasError, _addressForm);
-        });
-    </script>
-@endsection

@@ -12,7 +12,7 @@
             </ol>
         </section>
         <section class="content">
-            <div id="admin_page" class="with_sidebar">
+            <div id="admin_page" class="with_sidebar" ng-controller="CompaniesController as vm">
 
                 <div class="box box-default">
                     <div class="box-header with-border">
@@ -25,20 +25,19 @@
                         </h3>
                     </div>
                     <div class="box-body">
-                        <ul class="nav nav-tabs">
-                            <li class=""><a data-toggle="tab" href="#tab-1">Company</a></li>
+                        <ul class="nav nav-tabs" ng-init="vm.error={mode: '{{old('mode', $mode)}}', hasError: '{{count($errors)}}'}">
+                            <li class=""><a data-toggle="tab" href="#tab-1" ng-click="vm.setActiveTab('')">Company</a></li>
                             @if($itemId)
-                                <li class=""><a data-toggle="tab" href="#tab-2">Company Addresses</a></li>
-                                <li class=""><a data-toggle="tab" href="#tab-3">Contacts</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-2" ng-click="vm.setActiveTab('company_address', '{{isset($companyAddress)}}', {{json_encode($companyAddress)}})">Company Addresses</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-3" ng-click="vm.setActiveTab('contact', '{{isset($contact)}}', {{json_encode($contact)}})">Contacts</a></li>
                                 @if($contact)
-                                    <li class=""><a data-toggle="tab" href="#tab-4">Contact Addresses</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-4" ng-click="vm.setActiveTab('contact_address', '{{isset($contactAddress)}}', {{json_encode($contactAddress)}})">Contact Addresses</a></li>
                                 @endif
-                                <li class=""><a data-toggle="tab" href="#tab-5">Subscriptions</a></li>
                             @endif
                         </ul>
                         <div class="tab-content">
                             <div id="tab-1" class="tab-pane">
-                                <div class="panel-body">
+                                <div class="panel-body" ng-if="vm.currentTab === ''">
                                     {!! Form::model($model, [
                                             'class'   => 'form-horizontal',
                                             'enctype' => 'multipart/form-data',
@@ -84,36 +83,29 @@
                                 </div>
                             </div>
                             @if($itemId)
-                                <div id="tab-2" class="tab-pane" >
-                                    <div class="panel-body">
+                                <div id="tab-2" class="tab-pane">
+                                    <div class="panel-body" ng-if="vm.currentTab === 'company_address'">
                                         <div class="panel-body">
                                             @include('admin.model.company.company_addresses')
                                         </div>
                                     </div>
                                 </div>
-                                <div id="tab-3" class="tab-pane" >
-                                    <div class="panel-body">
+                                <div id="tab-3" class="tab-pane">
+                                    <div class="panel-body" ng-if="vm.currentTab === 'contact'">
                                         <div class="panel-body">
                                             @include('admin.model.company.contacts')
                                         </div>
                                     </div>
                                 </div>
                                 @if($contact)
-                                    <div id="tab-4" class="tab-pane" >
-                                        <div class="panel-body">
+                                    <div id="tab-4" class="tab-pane">
+                                        <div class="panel-body" ng-if="vm.currentTab === 'contact_address'">
                                             <div class="panel-body">
                                                 @include('admin.model.company.contact_addresses')
                                             </div>
                                         </div>
                                     </div>
                                 @endif
-                                <div id="tab-5" class="tab-pane" >
-                                    <div class="panel-body">
-                                        <div class="panel-body">
-                                            @include('admin.model.company.subscriptions')
-                                        </div>
-                                    </div>
-                                </div>
                             @endif
                         </div>
                     </div>
@@ -125,6 +117,7 @@
 @endsection
 
 @section('javascript')
+    <script src="{{ asset('packages/ddpro/admin/assets/js/companies/companies.controller.js') }}"></script>
     <script !src="">
         $(function () {
             var _mode = '{{old('mode', $mode)}}';
@@ -134,8 +127,6 @@
                 $('ul.nav-tabs a[href="#tab-3"]').trigger('click');
             }else if (_mode == 'contact_address') {
                 $('ul.nav-tabs a[href="#tab-4"]').trigger('click');
-            }else if (_mode == 'subscription') {
-                $('ul.nav-tabs a[href="#tab-5"]').trigger('click');
             } else {
                 $('ul.nav-tabs a[href="#tab-1"]').trigger('click');
             }
