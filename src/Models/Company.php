@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use Delatbabel\Applog\Models\Auditable;
 use Delatbabel\Fluents\Fluents;
 use Delatbabel\NestedCategories\Models\Category;
+use DDPro\Admin\Includes\DDSoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
 
@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
  */
 class Company extends Model
 {
-    use SoftDeletes, Fluents, Auditable;
+    use DDSoftDeletes, Fluents, Auditable;
 
     /** @var array */
     protected $guarded = ['id'];
