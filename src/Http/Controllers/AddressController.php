@@ -89,6 +89,9 @@ class AddressController extends AdminModelController
             'contact_name',
             'contact_phone',
         ]));
+        // Default geocode_status is 'pending' when saving address
+        // It will be updated later in background geocode function
+        $model->geocode_status = 'pending';
         $model->save();
 
         return $model;
