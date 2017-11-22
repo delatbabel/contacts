@@ -33,6 +33,8 @@
                     <tr>
                         <th>#</th>
                         <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
                         <th>Type</th>
                         <th>Actions</th>
                     </tr>
@@ -42,6 +44,8 @@
                         <tr>
                             <td>{{$item->id}}</td>
                             <td>{{$item->sorted_name}}</td>
+                            <td>{{$item->email}}</td>
+                            <td>{{$item->phone}}</td>
                             <td>{{$item->category->name}}</td>
                             <td>
                                 <a href="{{ route('admin_get_item', ['model' => $config->getOption('name'), $itemId, 'contact_id' => $item->id]) }}" class="btn btn-xs btn-sd-default btn-edit">
